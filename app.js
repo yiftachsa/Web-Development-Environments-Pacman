@@ -7,6 +7,7 @@ var start_time;
 var time_elapsed;
 var interval;
 
+
 $(document).ready(function() {
 	context = canvas.getContext("2d");
 	Start();
