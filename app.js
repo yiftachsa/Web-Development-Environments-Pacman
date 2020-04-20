@@ -20,6 +20,7 @@ var time_elapsed;
 var moveInterval;
 
 var isMouthOpen = true;
+var lastKeyPressed = 39;
 
 
 const cellType = { BLANK: "blank", WALL: "wall", FOOD: "food:", PACMAN: "pacman", ENEMY: "enemy" };
@@ -130,29 +131,7 @@ function Draw() {
             center.x = i * cellSize + 30;
             center.y = j * cellSize + 30;
             if (board[i][j] == cellType.PACMAN) {
-                if (!isMouthOpen) {
-                    //body - half circle
-                    context.beginPath();
-                    context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI);
-                    context.lineTo(center.x, center.y);
-                    context.fillStyle = pac_color; //color
-                    context.fill();
-
-                    isMouthOpen = true;
-                } else {
-                    //body - full circle
-                    context.beginPath();
-                    context.arc(center.x, center.y, 30, 0, 1.97 * Math.PI); 
-                    context.lineTo(center.x, center.y);
-                    context.fillStyle = pac_color; //color
-                    context.fill();
-                    isMouthOpen = false;
-                }
-                //eye
-                context.beginPath();
-                context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
-                context.fillStyle = "black"; //color
-                context.fill();
+                drawPacman(center);
             } else if (board[i][j] == cellType.FOOD) {
                 context.beginPath();
                 context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
@@ -168,12 +147,63 @@ function Draw() {
     }
 }
 
+function getAngle() {
+    switch (lastKeyPressed) {
+        case upKeyCode:
+            return (-0.5 * Math.PI);
+            break;
+        case downKeyCode:
+            return (0.5 * Math.PI);
+            break;
+        case leftKeyCode:
+            return Math.PI;
+            break;
+        case rightKeyCode:
+            return 0;
+        default:
+            return 0;
+    }
+}
+
+function drawPacman(center) {
+        //body - half circle
+    context.beginPath();
+    let angle = getAngle();
+    if (!isMouthOpen) {
+        context.arc(center.x, center.y, 30, 0.15 * Math.PI + angle, 1.85 * Math.PI + angle);
+        isMouthOpen = true;
+    }
+    else {
+        context.arc(center.x, center.y, 30, angle, 1.97 * Math.PI + angle);
+        isMouthOpen = false;
+    }
+    context.lineTo(center.x, center.y);
+    context.fillStyle = pac_color; //color
+    context.fill();
+    //eye
+    context.beginPath();
+    if (lastKeyPressed == upKeyCode) {
+        context.arc(center.x - 15, center.y + 5, 5, angle, 2 * Math.PI + angle); // circle
+    } else if (lastKeyPressed == downKeyCode) {
+        context.arc(center.x - 15, center.y + 5, 5, angle, 2 * Math.PI + angle); // circle
+    } else if (lastKeyPressed == leftKeyCode) {
+        context.arc(center.x - 5, center.y - 15, 5, angle, 2 * Math.PI + angle); // !
+    } else {
+        context.arc(center.x + 5, center.y - 15, 5, angle, 2 * Math.PI + angle); 
+    }
+    context.fillStyle = "black"; //color
+    context.fill();
+}
+
 function UpdatePosition() {
     //removing previous location
     board[pacmanPosition.i][pacmanPosition.j] = cellType.BLANK;
     //updating packman location
     movePacman();
-
+    if (board[pacmanPosition.i][pacmanPosition.j] == cellType.FOOD) {
+        score++;
+    }
+    board[pacmanPosition.i][pacmanPosition.j] = cellType.PACMAN;
     //updating time
     var currentTime = new Date();
     time_elapsed = (currentTime - start_time) / 1000;
@@ -193,26 +223,26 @@ function UpdatePosition() {
         if (keysDown[upKeyCode]) {
             if (pacmanPosition.j > 0 && board[pacmanPosition.i][pacmanPosition.j - 1] != cellType.WALL) {
                 pacmanPosition.j--;
+                lastKeyPressed = upKeyCode;
             }
         }
         if (keysDown[downKeyCode]) {
             if (pacmanPosition.j < 9 && board[pacmanPosition.i][pacmanPosition.j + 1] != cellType.WALL) {
                 pacmanPosition.j++;
+                lastKeyPressed = downKeyCode;
             }
         }
         if (keysDown[leftKeyCode]) {
             if (pacmanPosition.i > 0 && board[pacmanPosition.i - 1][pacmanPosition.j] != cellType.WALL) {
                 pacmanPosition.i--;
+                lastKeyPressed = leftKeyCode;
             }
         }
         if (keysDown[rightKeyCode]) {
             if (pacmanPosition.i < 9 && board[pacmanPosition.i + 1][pacmanPosition.j] != cellType.WALL) {
                 pacmanPosition.i++;
+                lastKeyPressed = rightKeyCode;
             }
         }
-        if (board[pacmanPosition.i][pacmanPosition.j] == cellType.FOOD) {
-            score++;
-        }
-        board[pacmanPosition.i][pacmanPosition.j] = cellType.PACMAN;
     }
 }
