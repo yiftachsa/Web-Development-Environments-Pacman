@@ -17,7 +17,9 @@ var score;
 var pac_color;
 var start_time;
 var time_elapsed;
-var interval;
+var moveInterval;
+
+var isMouthOpen = true;
 
 
 const cellType = { BLANK: "blank", WALL: "wall", FOOD: "food:", PACMAN: "pacman", ENEMY: "enemy" };
@@ -58,7 +60,7 @@ function Start() {
     );
 
     //updating the user postion - also impacts player's speed
-    interval = setInterval(UpdatePosition, 140);
+    moveInterval = setInterval(UpdatePosition, 140);
 }
 
 function startBoard() {
@@ -124,17 +126,28 @@ function Draw() {
     for (var i = 0; i < 10; i++) {
         for (var j = 0; j < 10; j++) {
             //position 
-            var center = new Object();
+            let center = new Object();
             center.x = i * cellSize + 30;
             center.y = j * cellSize + 30;
-
             if (board[i][j] == cellType.PACMAN) {
-                //body
-                context.beginPath();
-                context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
-                context.lineTo(center.x, center.y);
-                context.fillStyle = pac_color; //color
-                context.fill();
+                if (!isMouthOpen) {
+                    //body - half circle
+                    context.beginPath();
+                    context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI);
+                    context.lineTo(center.x, center.y);
+                    context.fillStyle = pac_color; //color
+                    context.fill();
+
+                    isMouthOpen = true;
+                } else {
+                    //body - full circle
+                    context.beginPath();
+                    context.arc(center.x, center.y, 30, 0, 1.97 * Math.PI); 
+                    context.lineTo(center.x, center.y);
+                    context.fillStyle = pac_color; //color
+                    context.fill();
+                    isMouthOpen = false;
+                }
                 //eye
                 context.beginPath();
                 context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
@@ -170,7 +183,7 @@ function UpdatePosition() {
         pac_color = "lime";
     }
     if (score == foodAmount) { //problem?
-        window.clearInterval(interval);
+        window.clearInterval(moveInterval);
         window.alert("Game completed");
     } else {
         Draw();
