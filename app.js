@@ -1,3 +1,4 @@
+
 /*
 * Main canvas gaming space
 */
@@ -7,9 +8,14 @@ var context;
 */
 var pacmanPosition = new Object();
 /*
-* game board
+* Board for Pacman, food and special food - all have a single interaction between them
 */
-var board;
+var pacmanBoard;
+/*
+* Board for the non-playable characters - interact only with pacman (do not interact withe the food and with each other)
+*/
+var npcBoard;
+
 /*
 * game score
 */
@@ -20,11 +26,14 @@ var time_elapsed;
 var moveInterval;
 
 var isMouthOpen = true;
+
 var lastKeyPressed = 39;
 
 
 const cellType = { BLANK: "blank", WALL: "wall", FOOD: "food:", PACMAN: "pacman", ENEMY: "enemy" };
 Object.freeze(cellType);
+
+
 var cellSize = 60;
 
 //Definitions
@@ -33,35 +42,108 @@ var downKeyCode = 40;
 var leftKeyCode = 37;
 var rightKeyCode = 39;
 var foodAmount = 50;
+var lowColor = "#ff0000";
+var medColor = "#E9FF00";
+var highColor = "#00FF1B";
+var timeLimit = 60;
+var enemiesAmount = 2;
 
 
 $(document).ready(function () {
-    context = canvas.getContext("2d");
-    Start();
+    //context = canvas.getContext("2d");
+    //Start();
+    startDefs();
 });
 
-function Start() {
-    startBoard();
-    keysDown = {};
-    //The keydown event is fired when a key is pressed. Unlike the keypress event, the keydown event is fired for all keys, regardless of whether they produce a character value
-    addEventListener(
-        "keydown",
-        function (e) {
-            keysDown[e.keyCode] = true;
-        },
-        false
-    );
-    //The keyup event occurs when the user releases a key
-    addEventListener(
-        "keyup",
-        function (e) {
-            keysDown[e.keyCode] = false;
-        },
-        false
-    );
+function startDefs() {
+    $("#chooseKeysDiv>:button").click(function (e) { keySelection(this.id); });
+    $("#randomButton").click(function (e) { randomizeDefs(); });
+    $("#startButton").click(function (e) { startGame(); });
+}
 
+
+
+function startGame() {
+    context = canvas.getContext("2d");
+    initGameEnvironment();
+      
+    startBoard();
     //updating the user postion - also impacts player's speed
     moveInterval = setInterval(UpdatePosition, 140);
+
+    //switchDevs
+    $("#defsForm").hide();
+    $("#game").show();
+}
+
+function initGameEnvironment() {
+    keysDown = {};
+    //The keydown event is fired when a key is pressed. Unlike the keypress event, the keydown event is fired for all keys, regardless of whether they produce a character value
+    addEventListener("keydown", function(e) { keysDown[e.keyCode] = true; }, false);
+    //The keyup event occurs when the user releases a key
+    addEventListener("keyup", function (e) { keysDown[e.keyCode] = false; }, false);
+    //update values
+    foodAmount = $("#foodQuantity").val();
+    medColor = $("#medScoreColor").val();
+    lowColor = $("#lowScoreColor").val();
+    highColor = $("#highScoreColor").val();
+    timeLimit = $("#timeLimitNum").val();
+    enemiesAmount = $("#enemiesQuantity").val();
+}
+
+/*
+ * Handels the key selection keys being pressed. 
+ * Captures a single key stroke and updates the relevent key code.
+ */
+function keySelection(buttonID) {
+    var button = $("#" + buttonID);
+    button.keydown(function (event) {
+        button.prop("value", event.key);
+        switch (buttonID) {
+            case "upKeybutton":
+                upKeyCode = event.keyCode;
+                break;
+            case "downKeybutton":
+                downKeyCode = event.keyCode;
+                break;
+            case "leftKeybutton":
+                downKeyCode = event.keyCode;
+                break;
+            case "rightKeybutton":
+                downKeyCode = event.keyCode;
+                break;
+        }
+        button.off("keydown");
+    });
+}
+
+/*
+ * Randomize values for the game definitions.
+ */ 
+function randomizeDefs() {
+    //food quantity
+    foodAmount = getRandomInt(50, 90);
+    //colors
+    lowColor = getRandomColor();
+    medColor = getRandomColor();
+    highColor = getRandomColor();
+    //time limit
+    timeLimit = getRandomInt(60, 360);
+    //enemies
+    enemiesAmount = getRandomInt(1, 4);
+
+    //update DOM
+    $("#foodQuantity").prop("value", foodAmount);
+    $("#lowScoreColor").prop("value", lowColor);
+    $("#medScoreColor").prop("value", medColor);
+    $("#highScoreColor").prop("value", highColor);
+    $("#timeLimitNum").prop("value", timeLimit);
+    $("#enemiesQuantity").prop("value", enemiesAmount);
+
+}
+
+function initBoards() {
+
 }
 
 function startBoard() {
@@ -198,12 +280,15 @@ function drawPacman(center) {
 function UpdatePosition() {
     //removing previous location
     board[pacmanPosition.i][pacmanPosition.j] = cellType.BLANK;
+
+
     //updating packman location
     movePacman();
     if (board[pacmanPosition.i][pacmanPosition.j] == cellType.FOOD) {
         score++;
     }
     board[pacmanPosition.i][pacmanPosition.j] = cellType.PACMAN;
+    
     //updating time
     var currentTime = new Date();
     time_elapsed = (currentTime - start_time) / 1000;
@@ -245,4 +330,28 @@ function UpdatePosition() {
             }
         }
     }
+}
+
+
+
+/*
+ * Returns a random integer between min(inclusive) and max(inclusive).
+ * from: https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+*/
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+/**
+ * Returns a random integer.
+ * from: https://stackoverflow.com/questions/1484506/random-color-generator
+ * */
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
