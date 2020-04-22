@@ -107,10 +107,10 @@ function keySelection(buttonID) {
                 downKeyCode = event.keyCode;
                 break;
             case "leftKeybutton":
-                downKeyCode = event.keyCode;
+                leftKeyCode = event.keyCode;
                 break;
             case "rightKeybutton":
-                downKeyCode = event.keyCode;
+                rightKeyCode = event.keyCode;
                 break;
         }
         button.off("keydown");
@@ -131,6 +131,11 @@ function randomizeDefs() {
     timeLimit = getRandomInt(60, 360);
     //enemies
     enemiesAmount = getRandomInt(1, 4);
+    //keys
+    upKeyCode = 38;
+    downKeyCode = 40;
+    leftKeyCode = 37;
+    rightKeyCode = 39;
 
     //update DOM
     $("#foodQuantity").prop("value", foodAmount);
@@ -139,6 +144,10 @@ function randomizeDefs() {
     $("#highScoreColor").prop("value", highColor);
     $("#timeLimitNum").prop("value", timeLimit);
     $("#enemiesQuantity").prop("value", enemiesAmount);
+    $("#upKeybutton").prop("value", ArrowUp);
+    $("#downKeybutton").prop("value", ArrowDown);
+    $("#leftKeybutton").prop("value", ArrowLeft);
+    $("#rightKeybutton").prop("value", ArrowRight);
 
 }
 
