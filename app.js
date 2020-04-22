@@ -8,9 +8,14 @@ var context;
 */
 var pacmanPosition = new Object();
 /*
-* game board
+* Board for Pacman, food and special food - all have a single interaction between them
 */
-var board;
+var pacmanBoard;
+/*
+* Board for the non-playable characters - interact only with pacman (do not interact withe the food and with each other)
+*/
+var npcBoard;
+
 /*
 * game score
 */
@@ -27,6 +32,7 @@ var lastKeyPressed = 39;
 
 const cellType = { BLANK: "blank", WALL: "wall", FOOD: "food:", PACMAN: "pacman", ENEMY: "enemy" };
 Object.freeze(cellType);
+
 
 var cellSize = 60;
 
@@ -58,8 +64,9 @@ function startDefs() {
 
 
 function startGame() {
+    context = canvas.getContext("2d");
     initGameEnvironment();
-  
+      
     startBoard();
     //updating the user postion - also impacts player's speed
     moveInterval = setInterval(UpdatePosition, 140);
@@ -70,7 +77,6 @@ function startGame() {
 }
 
 function initGameEnvironment() {
-    context = canvas.getContext("2d");
     keysDown = {};
     //The keydown event is fired when a key is pressed. Unlike the keypress event, the keydown event is fired for all keys, regardless of whether they produce a character value
     addEventListener("keydown", function(e) { keysDown[e.keyCode] = true; }, false);
@@ -136,6 +142,9 @@ function randomizeDefs() {
 
 }
 
+function initBoards() {
+
+}
 
 function startBoard() {
     board = new Array(); //new game board
