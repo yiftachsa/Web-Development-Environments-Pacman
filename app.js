@@ -226,6 +226,7 @@ function initBoards() {
             for (let j = 0; j < 10; j++) {
                 if (baseBoard[i][j] == baseBoardCellType.WALL) {
                     pacmanBoard[i][j] = baseBoardCellType.WALL;
+                    continue;
                 } else {
                     pacmanBoard[i][j] = baseBoardCellType.BLANK;
                 }
