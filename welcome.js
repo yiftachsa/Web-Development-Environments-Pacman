@@ -3,15 +3,18 @@ $(document).ready(function () {
 });
 
 
+var users = [];
+//var passwords = [];
+
 
 function start() {
     $("#sighInButtom").click(function (e) { signInFunction(); });
     $("#loginByttom").click(function (e) { loginFunction(); });
     $("#submit").click(function (e) { submitFunction(); });
     $("#connect").click(function (e) { connectFunction(); });
-
-
-
+ //   users = localStorage.getItem('users');
+ //   passwords = localStorage.getItem('passwords');
+}
 
     function signInFunction() {
         //switchDevs
@@ -30,7 +33,7 @@ function start() {
     function submitFunction() {
         let username = $("#username").val();
         let password = $("#password").val();
-        let passwordCnfirm = $("#passwordCnfirm").val();
+        let passwordCnfirm = $("#passwordConfirm").val();
         let fullname = $("#fullName").val();
         let email = $("#email").val();
         let birthday = $("#birthday").val();
@@ -40,7 +43,11 @@ function start() {
             alert("Username must be filled out");
             return false;
         }
-
+        if (checkUsernameExist == null)
+        {
+            alert("Username already exsit");
+            return false;
+        }
         if (password == "") {
             alert("Password must be filled out");
             return false;
@@ -51,7 +58,7 @@ function start() {
             return false;
         }
 
-        if (passwordCnfirm!=password)
+        if (passwordCnfirm != password)
         {
             alert("Passwords does not math");
             return false;
@@ -73,16 +80,58 @@ function start() {
             return false;
         }
 
+        createUser(username, password);
+
         //switchDevs
         $("#signIn").hide();
         $("#welcome").show();
 
+    }
+
+    // storing input from sign in
+    function createUser(username, password) {
+        const user = { username, password };
+        users.push(user);  //put it on the end of the array
+        let myJSON = JSON.stringify(users);
+        localStorage.setItem('users', myJSON);
 
 
+        /*
+        users.push(useusername);  //put it on the end of the array
+        passwords.push(password);  //put it on the end of the array
+        let myJSON = JSON.stringify(users);
+        localStorage.setItem('users', myJSON);
+        myJSON = JSON.stringify(passwords);
+        localStorage.setItem('passwords', myJSON);
+        */
 
     }
 
+    function getUser(username, password) {
+        //loops through each user in the array and checks the stored username and password against the one you're looking for
+        return users.find(eachUser => {
+            return eachUser.username === username && eachUser.password === password;
+        });
+    }
+
+    function checkUsernameExist(username) {
+        //loops through each user in the array and checks the stored username and password against the one you're looking for
+        return users.find(eachUser => {
+            return eachUser.username === username;
+        });
+    }
+
+
     function connectFunction() {
+
+        users = localStorage.getItem('users');
+        let username = $("#username").val();
+        let password = $("#password").val();
+        if (!getUser)
+        {
+            alert("Username or password are incorrect");
+            return false;
+        }
         //switchDevs
         $("#login").hide();
         $("#defsForm").show();
@@ -97,4 +146,4 @@ function start() {
         }
         return (false)
     }
-}
+
