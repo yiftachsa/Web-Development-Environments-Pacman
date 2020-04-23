@@ -430,19 +430,20 @@ function Draw() {
         }
         context.fill();
         
-
         context.beginPath();
         context.font = '10px serif';
         context.fillStyle = "Black";
-        context.fillText(text, center.x, center.y);
+        context.fillText(text, center.x-4, center.y+3);
         context.fill();
     }
-
     function drawBerry(center) {
         context.beginPath();
-        context.arc(center.x + 10, center.y + 10, 10, 0, 2 * Math.PI);
-        context.arc(center.x, center.y, 10, 0, 2 * Math.PI);
-        context.arc(center.x - 10, center.y - 10, 10, 0, 2 * Math.PI);
+        context.arc(center.x + 10, center.y + 10, 7, 0, 2 * Math.PI);
+        context.arc(center.x + 5, center.y + 5, 7, 0, 2 * Math.PI);
+        context.arc(center.x, center.y, 7, 0, 2 * Math.PI);
+        context.arc(center.x - 10, center.y - 10, 7, 0, 2 * Math.PI);
+        context.arc(center.x - 5, center.y - 5, 7, 0, 2 * Math.PI);
+        
         context.fillStyle = "Red";
         context.fill();
     }
@@ -455,37 +456,52 @@ function Draw() {
     }
 
     function drawNPC(center, k) {
-        context.beginPath();
-        context.arc(center.x, center.y, 20, 0, 2 * Math.PI);
+        //context.beginPath();
+        //context.arc(center.x, center.y, 20, 0, 2 * Math.PI);
         let text = "";
+        let color;
         switch (k) {
             case 0:
-                context.fillStyle = "#8A0000";
+                color = "#8A0000";
                 text = "enemy1";
                 break;
             case 1:
-                context.fillStyle = "#FAFF00";
+                color = "#FAFF00";
                 text = "enemy2";
                 break;
             case 2:
-                context.fillStyle = "#0039C1";
+                color = "#0039C1";
                 text = "enemy3";
                 break;
             case 3:
-                context.fillStyle = "#E900FF";
+                color = "#E900FF";
                 text = "enemy4";
                 break;
             case 4:
-                context.fillStyle = "#00DEFF";
+                color = getRandomColor();
                 text = "wild";
                 break;
         }
+        //context.fill();
+
+
+
+        context.beginPath();
+        context.fillStyle = color;
+        context.arc(center.x, center.y, 20, Math.PI, 2 * Math.PI);
+        context.lineTo(center.x + 20, center.y + 20);
+        context.arc(center.x + 20 / 2, center.y + 20, 20 * 0.5, 0, Math.PI);
+        context.arc(center.x + 20 / 2 - 20, center.y + 20, 20 * 0.5, 0, Math.PI);
+        context.closePath();
         context.fill();
-        
+
+
+
+
         context.beginPath();
         context.font = '10px serif';
         context.fillStyle = "Black";
-        context.fillText(text, center.x, center.y);
+        context.fillText(text, center.x-15, center.y+2);
         context.fill();
         
     }

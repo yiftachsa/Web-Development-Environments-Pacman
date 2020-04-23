@@ -1,76 +1,118 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="./jquery-3.4.1.slim.min.js"></script>
-	<script type="text/javascript" src="./app.js"></script>
-	<script src="./jquery-validation-1.19.1/dist/jquery.validate.js"></script>
+    <script src="./jquery-3.4.1.slim.min.js"></script>
+    <script type="text/javascript" src="./app.js"></script>
+    <!--<script type="text/javascript" src="./about.js"></script>-->
+    <script src="./jquery-validation-1.19.1/dist/jquery.validate.js"></script>
 </head>
 
-	<body>
-		<div id="welcome" style="display: none;">
-			<button id="button">BBBBBB</button>
-		</div>
-		<div id="defsForm">
-			<form id="form" autocomplete="off">
-                <fieldset>
-                    <legend>Decide the intensity of your challenge</legend>
-                    <div id="chooseKeysDiv">
-                        <p>
-                            Press to choose controls
-                        </p>
+<body>
+    <div id="menu" align="center">
+        <input type="button" id="welcomeMenuButton" value="Welcome">
+        <input type="button" id="signupMenuButton" value="Signup">
+        <input type="button" id="loginMenuButton" value="Login">
+        <input type="button" id="aboutMenuButton" value=" About">
+    </div>
 
-                        <label for="upKeybutton">move UP:</label>
-                        <input id="upKeybutton" value="ArrowUp" name="upKeybutton" type="button">
-
-                        <label for="downKeybutton">move DOWN:</label>
-                        <input id="downKeybutton" value="ArrowDown" name="downKeybutton" type="button">
-
-                        <label for="leftKeybutton">move LEFT:</label>
-                        <input id="leftKeybutton" value="ArrowLeft" name="leftKeybutton" type="button">
-
-                        <label for="rightKeybutton">move RIGHT:</label>
-                        <input id="rightKeybutton" value="ArrowRight" name="rightKeybutton" type="button">
-                        <p>
-                            <label for="foodQuantity">Food Quantity (between 50 and 90)</label>
-                            <input type="number" id="foodQuantity" value="50" name="foodQuantity" min="50" max="90">
-                        </p>
-                    </div>
-                    <p>
-                        Choose colors
-                    </p>
-                    <p>
-                        <label for="lowScoreColor">Low score color:</label>
-                        <input type="color" id="lowScoreColor" name="lowScoreColor" value="#ff0000">
-                        <label for="medScoreColor">Medium score color:</label>
-                        <input type="color" id="medScoreColor" name="medScoreColor" value="#E9FF00">
-                        <label for="highScoreColor">High score color:</label>
-                        <input type="color" id="highScoreColor" name="highScoreColor" value="#00FF1B">
-                    </p>
-                    <p>
-                        <label for="timeLimitNum">Time Limit (min: 60 sec, we don't want to make it to hard now, do we?)</label>
-                        <input type="number" id="timeLimitNum" name="timeLimitNum" value="60" min="60">
-                    </p>
-                    <p>
-                        <label for="enemiesQuantity">How many enemies? (between 1 and 4)</label>
-                        <input type="number" id="enemiesQuantity" name="enemiesQuantity" value="2" min="1" max="4">
-                    </p>
-                    <p>
-                        <input type="button" id="randomButton" name="randomButton" value="random">
-                        <input type="button" id="startButton" name="startButton" value="Let's GO!!!">
-                    </p>
-                </fieldset>
-			</form>
-		</div>
-        <div id="game" style="display: none;">
-            <div id="score">
-                <label for="lblScore">SCORE:</label>
-                <input id="lblScore" type="text" />
-            </div>
-            <div id="time">
-                <label for="lblTime">TIME:</label>
-                <input id="lblTime" type="text" />
-            </div>
-            <canvas id="canvas" height="600" width="600"></canvas>
+    <div id="welcome" style="display: none;">
+        <button id="button">BBBBBB</button>
+    </div>
+    <div id="aboutModal" class="modal">
+        <div>
+            <span id="spanId">&times;</span>
+            <p>hey</p>
         </div>
-	</body>
+    </div>
+    <div id="defsForm">
+        <form id="form" autocomplete="off">
+            <fieldset>
+                <legend>Decide the intensity of your challenge</legend>
+                <div id="chooseKeysDiv">
+                    <p>
+                        Press to choose controls
+                    </p>
+
+                    <label for="upKeybutton">move UP:</label>
+                    <input id="upKeybutton" value="ArrowUp" name="upKeybutton" type="button">
+
+                    <label for="downKeybutton">move DOWN:</label>
+                    <input id="downKeybutton" value="ArrowDown" name="downKeybutton" type="button">
+
+                    <label for="leftKeybutton">move LEFT:</label>
+                    <input id="leftKeybutton" value="ArrowLeft" name="leftKeybutton" type="button">
+
+                    <label for="rightKeybutton">move RIGHT:</label>
+                    <input id="rightKeybutton" value="ArrowRight" name="rightKeybutton" type="button">
+                    <p>
+                        <label for="foodQuantity">Food Quantity (between 50 and 90)</label>
+                        <input type="number" id="foodQuantity" value="50" name="foodQuantity" min="50" max="90">
+                    </p>
+                </div>
+                <p>
+                    Choose colors
+                </p>
+                <p>
+                    <label for="lowScoreColor">Low score color:</label>
+                    <input type="color" id="lowScoreColor" name="lowScoreColor" value="#ff0000">
+                    <label for="medScoreColor">Medium score color:</label>
+                    <input type="color" id="medScoreColor" name="medScoreColor" value="#E9FF00">
+                    <label for="highScoreColor">High score color:</label>
+                    <input type="color" id="highScoreColor" name="highScoreColor" value="#00FF1B">
+                </p>
+                <p>
+                    <label for="timeLimitNum">Time Limit (min: 60 sec, we don't want to make it to hard now, do we?)</label>
+                    <input type="number" id="timeLimitNum" name="timeLimitNum" value="60" min="60">
+                </p>
+                <p>
+                    <label for="enemiesQuantity">How many enemies? (between 1 and 4)</label>
+                    <input type="number" id="enemiesQuantity" name="enemiesQuantity" value="2" min="1" max="4">
+                </p>
+                <p>
+                    <input type="button" id="randomButton" name="randomButton" value="random">
+                    <input type="button" id="startButton" name="startButton" value="Let's GO!!!">
+                </p>
+            </fieldset>
+        </form>
+    </div>
+    <div id="game" style="display: none;">
+        <div id="score">
+            <label for="lblScore">SCORE:</label>
+            <input id="lblScore" type="text" />
+        </div>
+        <div id="time">
+            <label for="lblTime">TIME:</label>
+            <input id="lblTime" type="text" />
+        </div>
+        <canvas id="canvas" height="600" width="600"></canvas>
+    </div>
+
+
+    <script>
+        var modal = document.getElementById("aboutModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("aboutMenuButton");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementById("spanId");
+
+        // When the user clicks on the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
 </html>
