@@ -216,28 +216,25 @@ function initBoards() {
         npcBoard[emptyCell[0]][emptyCell[1]] = npcCell;
     }
 
-    
+
     function initPacmanBoard() {
         pacmanBoard = new Array();
         let cnt = 100;
-        
+
         for (let i = 0; i < 10; i++) {
             pacmanBoard[i] = new Array();
             for (let j = 0; j < 10; j++) {
                 if (baseBoard[i][j] == baseBoardCellType.WALL) {
                     pacmanBoard[i][j] = baseBoardCellType.WALL;
+                } else {
+                    pacmanBoard[i][j] = baseBoardCellType.BLANK;
                 }
-                else {
-                    let randomNum = Math.random();
-                    if (randomNum <= (1.0 * food_remain) / cnt) { //FOOD
-                        placeFood(randomNum, i, j);
-                        food_remain--;
-                    }
-                    else {
-                        pacmanBoard[i][j] = baseBoardCellType.BLANK;
-                    }
-                    cnt--;
+                let randomNum = Math.random();
+                if (randomNum <= (1.0 * food_remain) / cnt) { //FOOD
+                    placeFood(randomNum, i, j);
+                    food_remain--;
                 }
+                cnt--;
             }
         }
 
@@ -280,7 +277,7 @@ function initBoards() {
             pacmanBoard[x][y] = pacmanBoardCellType.MEDSCOREFOOD;
             medFoodRemain--;
         }
-        else if (highFoodRemain > 0){ //high score food
+        else if (highFoodRemain > 0) { //high score food
             pacmanBoard[x][y] = pacmanBoardCellType.HIGHSCOREFOOD;
             highFoodRemain--;
         }
@@ -396,7 +393,7 @@ function Draw() {
             }
 
             //SECOND layer - npcBoard
-            if (npcBoard[i][j] != baseBoardCellType.BLANK && baseBoard[i][j] == baseBoardCellType.WALL) {
+            if (npcBoard[i][j] != baseBoardCellType.BLANK && baseBoard[i][j] != baseBoardCellType.WALL) {
                 let npcCell = npcBoard[i][j];
                 for (let k = 0; k < 5; k++) {
                     if (npcCell[k] == true) {
@@ -427,7 +424,7 @@ function Draw() {
         }
         context.fill();
         //context.closePath();
-        
+
         context.beginPath();
         context.font = '10px serif';
         context.fillText(text, center.x, center.y);
@@ -452,7 +449,7 @@ function Draw() {
     }
     function drawNPC(center, k) {
         context.beginPath();
-        context.arc(center.x, center.y, 15, 0, 2 * Math.PI);
+        context.arc(center.x, center.y, 20, 0, 2 * Math.PI);
         let text = "";
         switch (k) {
             case 0:
@@ -477,11 +474,13 @@ function Draw() {
                 break;
         }
         context.fill();
+        
         context.beginPath();
         context.font = '10px serif';
         context.fillText(text, center.x, center.y);
         context.fillStyle = "Black";
         context.fill();
+        
     }
 }
 
