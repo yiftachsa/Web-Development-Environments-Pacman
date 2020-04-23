@@ -231,8 +231,9 @@ function initBoards() {
                 }
                 let randomNum = Math.random();
                 if (randomNum <= (1.0 * food_remain) / cnt) { //FOOD
-                    placeFood(randomNum, i, j);
-                    food_remain--;
+                    if (placeFood(randomNum, i, j)) {
+                        food_remain--;
+                    }
                 }
                 cnt--;
             }
@@ -261,26 +262,30 @@ function initBoards() {
             food_remain--;
         }
         //Special Berry
-        let emptyCell = findRandomEmptyCell(pacmanBoard);
-        pacmanBoard[emptyCell[0]][emptyCell[1]] = pacmanBoardCellType.AVIVBERRY;
+        let emptyBerryCell = findRandomEmptyCell(pacmanBoard);
+        pacmanBoard[emptyBerryCell[0]][emptyBerryCell[1]] = pacmanBoardCellType.AVIVBERRY;
         //clock
-        emptyCell = findRandomEmptyCell(pacmanBoard);
-        pacmanBoard[emptyCell[0]][emptyCell[1]] = pacmanBoardCellType.CLOCK;
+        emptyClockCell = findRandomEmptyCell(pacmanBoard);
+        pacmanBoard[emptyClockCell[0]][emptyClockCell[1]] = pacmanBoardCellType.CLOCK;
     }
 
     function placeFood(randomNum, x, y) {
         if (randomNum <= 0.6 && lowFoodRemain > 0) { //low score food
             pacmanBoard[x][y] = pacmanBoardCellType.LOWSCOREFOOD;
             lowFoodRemain--;
+            return true;
         }
         else if (randomNum > 0.6 && randomNum <= 0.9 && medFoodRemain > 0) { //medium score food
             pacmanBoard[x][y] = pacmanBoardCellType.MEDSCOREFOOD;
             medFoodRemain--;
+            return true;
         }
         else if (highFoodRemain > 0) { //high score food
             pacmanBoard[x][y] = pacmanBoardCellType.HIGHSCOREFOOD;
             highFoodRemain--;
+            return true;
         }
+        return false;
     }
 
     function initBaseBoard() {
@@ -423,12 +428,12 @@ function Draw() {
                 break;
         }
         context.fill();
-        //context.closePath();
+        
 
         context.beginPath();
         context.font = '10px serif';
-        context.fillText(text, center.x, center.y);
         context.fillStyle = "Black";
+        context.fillText(text, center.x, center.y);
         context.fill();
     }
 
@@ -447,6 +452,7 @@ function Draw() {
         context.fillStyle = "Black";
         context.fill();
     }
+
     function drawNPC(center, k) {
         context.beginPath();
         context.arc(center.x, center.y, 20, 0, 2 * Math.PI);
@@ -477,8 +483,8 @@ function Draw() {
         
         context.beginPath();
         context.font = '10px serif';
-        context.fillText(text, center.x, center.y);
         context.fillStyle = "Black";
+        context.fillText(text, center.x, center.y);
         context.fill();
         
     }
