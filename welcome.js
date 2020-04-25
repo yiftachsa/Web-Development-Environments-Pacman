@@ -125,6 +125,7 @@ function start() {
     }
 
 
+
     //JavaScript code to validate an email id
     function ValidateEmail(email) {
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
