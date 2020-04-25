@@ -3,17 +3,13 @@ $(document).ready(function () {
 });
 
 
-var users = [];
-//var passwords = [];
-
 
 function start() {
     $("#sighInButtom").click(function (e) { signInFunction(); });
     $("#loginByttom").click(function (e) { loginFunction(); });
     $("#submit").click(function (e) { submitFunction(); });
     $("#connect").click(function (e) { connectFunction(); });
- //   users = localStorage.getItem('users');
- //   passwords = localStorage.getItem('passwords');
+
 }
 
     function signInFunction() {
@@ -43,7 +39,7 @@ function start() {
             alert("Username must be filled out");
             return false;
         }
-        if (checkUsernameExist == null)
+        if (checkUsernameExist(username))
         {
             alert("Username already exsit");
             return false;
@@ -90,45 +86,35 @@ function start() {
 
     // storing input from sign in
     function createUser(username, password) {
-        const user = { username, password };
-        users.push(user);  //put it on the end of the array
-        let myJSON = JSON.stringify(users);
-        localStorage.setItem('users', myJSON);
+        let usernameJSON = JSON.stringify(username);
+        let passwordJSON = JSON.stringify(password);
 
-
-        /*
-        users.push(useusername);  //put it on the end of the array
-        passwords.push(password);  //put it on the end of the array
-        let myJSON = JSON.stringify(users);
-        localStorage.setItem('users', myJSON);
-        myJSON = JSON.stringify(passwords);
-        localStorage.setItem('passwords', myJSON);
-        */
+        localStorage.setItem(username, password);
 
     }
 
-    function getUser(username, password) {
-        //loops through each user in the array and checks the stored username and password against the one you're looking for
-        return users.find(eachUser => {
-            return eachUser.username === username && eachUser.password === password;
-        });
-    }
 
     function checkUsernameExist(username) {
-        //loops through each user in the array and checks the stored username and password against the one you're looking for
-        return users.find(eachUser => {
-            return eachUser.username === username;
-        });
+        let user = localStorage.getItem(username)
+        if(user == undefined)
+        {
+            return false;
+        }
+        return true;
     }
 
 
     function connectFunction() {
 
         users = localStorage.getItem('users');
-        let username = $("#username").val();
-        let password = $("#password").val();
-        if (!getUser)
+        let username = $("#usernameConnect").val();
+        let password = $("#passwordConnect").val();
+        if (localStorage.getItem(username) == undefined)
         {
+            alert("Username or password are incorrect");
+            return false;
+        }
+        if (localStorage.getItem(username) != password) {
             alert("Username or password are incorrect");
             return false;
         }
