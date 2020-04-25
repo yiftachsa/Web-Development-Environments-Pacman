@@ -5,24 +5,57 @@ $(document).ready(function () {
 
 
 function start() {
-    $("#sighInButtom").click(function (e) { signInFunction(); });
+    $("#signupButtom").click(function (e) { signupFunction(); });
+    $("#welcomeMenuButton").click(function (e) { signupFunction(); });
+
     $("#loginByttom").click(function (e) { loginFunction(); });
+    $("#loginMenuButton").click(function (e) { loginFunction(); });
+
     $("#submit").click(function (e) { submitFunction(); });
     $("#connect").click(function (e) { connectFunction(); });
 
+    $("#welcomeMenuButton").click(function (e) { welcomeFunction(); });
+
+    localStorage.setItem("p", "p");
+
 }
 
-    function signInFunction() {
-        //switchDevs
-        $("#welcome").hide();
-        $("#signIn").show();
+
+    function welcomeFunction() {
+    //switchDevs
+    $("#signup").hide();
+    $("#login").hide();
+    $("#aboutModal").hide();
+    $("#defsForm").hide();
+    $("#game").hide();
+    
+    $("#welcome").show();
+}
+
+    function signupFunction() {
+      //switchDevs
+    $("#login").hide();
+    $("#aboutModal").hide();
+    $("#defsForm").hide();
+    $("#game").hide();
+
+    $("#welcome").hide();
+    $("#signup").show();
+
+
     }
 
 
 
     function loginFunction() {
         //switchDevs
+        $("#aboutModal").hide();
+        $("#defsForm").hide();
+        $("#game").hide();
+
         $("#welcome").hide();
+        $("#signup").hide();
+
         $("#login").show();
     }
 
@@ -76,6 +109,11 @@ function start() {
             return false;
         }
 
+        if (birthday == "") {
+            alert("Birthday must be filled out")
+            return false;
+        }
+
         createUser(username, password);
 
         //switchDevs
@@ -109,6 +147,17 @@ function start() {
         users = localStorage.getItem('users');
         let username = $("#usernameConnect").val();
         let password = $("#passwordConnect").val();
+
+        if (username == "") {
+            alert("Username must be filled out");
+            return false;
+        }
+
+        if (password == "") {
+            alert("Password must be filled out");
+            return false;
+        }
+
         if (localStorage.getItem(username) == undefined)
         {
             alert("Username or password are incorrect");
