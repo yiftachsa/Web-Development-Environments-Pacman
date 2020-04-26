@@ -1,4 +1,3 @@
-
 /*
 * Main canvas gaming space
 */
@@ -23,6 +22,9 @@ var pacmanBoard;
 */
 var npcBoard;
 
+var npcPosition;
+
+
 
 var moveInterval;
 
@@ -36,6 +38,8 @@ const baseBoardCellType = { BLANK: "blank", WALL: "wall" };
 Object.freeze(baseBoardCellType);
 const pacmanBoardCellType = { LOWSCOREFOOD: "lowScoreFood", MEDSCOREFOOD: "medScoreFood", HIGHSCOREFOOD: "highScoreFood", PACMAN: "pacman", CLOCK: "clock", AVIVBERRY: "avivBerry" };
 Object.freeze(pacmanBoardCellType);
+const npcMoveType = { RIGHT: 1, LEFT: 2 , UP: 3 , DOWN: 4};
+Object.freeze(npcMoveType);
 
 //Game variables
 var lifesRemain;
@@ -184,6 +188,7 @@ function initBoards() {
 
     function initNpcBoard() {
         npcBoard = new Array();
+        npcPosition = new Array();
         for (let i = 0; i < 10; i++) {
             npcBoard[i] = new Array();
             for (let j = 0; j < 10; j++) {
@@ -204,6 +209,9 @@ function initBoards() {
             let npcCell = [false, false, false, false, false];
             npcCell[enemiesCount] = true;
             npcBoard[emptyCell[0]][emptyCell[1]] = npcCell;
+            npcPosition[enemiesCount] = new Object();
+            npcPosition[enemiesCount].i = emptyCell[0]
+            npcPosition[enemiesCount].j = emptyCell[1]
             enemiesCount++;
         }
         //Wild npc
@@ -429,11 +437,11 @@ function Draw() {
                 break;
         }
         context.fill();
-        
+
         context.beginPath();
         context.font = '10px serif';
         context.fillStyle = "Black";
-        context.fillText(text, center.x-4, center.y+3);
+        context.fillText(text, center.x - 4, center.y + 3);
         context.fill();
     }
     function drawBerry(center) {
@@ -443,7 +451,7 @@ function Draw() {
         context.arc(center.x, center.y, 7, 0, 2 * Math.PI);
         context.arc(center.x - 10, center.y - 10, 7, 0, 2 * Math.PI);
         context.arc(center.x - 5, center.y - 5, 7, 0, 2 * Math.PI);
-        
+
         context.fillStyle = "Red";
         context.fill();
     }
@@ -484,8 +492,6 @@ function Draw() {
         }
         //context.fill();
 
-
-
         context.beginPath();
         context.fillStyle = color;
         context.arc(center.x, center.y, 20, Math.PI, 2 * Math.PI);
@@ -495,15 +501,12 @@ function Draw() {
         context.closePath();
         context.fill();
 
-
-
-
         context.beginPath();
         context.font = '10px serif';
         context.fillStyle = "Black";
-        context.fillText(text, center.x-15, center.y+2);
+        context.fillText(text, center.x - 15, center.y + 2);
         context.fill();
-        
+
     }
 }
 
@@ -555,6 +558,8 @@ function drawPacman(center) {
     context.fill();
 }
 
+
+
 function UpdatePosition() {
     //removing previous pacman location
     pacmanBoard[pacmanPosition.i][pacmanPosition.j] = baseBoardCellType.BLANK;
@@ -565,6 +570,8 @@ function UpdatePosition() {
 
     let enconteredEnemy = false;
 
+    
+    
     if (npcBoard[pacmanPosition.i][pacmanPosition.j] != baseBoardCellType.BLANK) {
         //interaction with enemies
         if (doesContainsEnemy(npcBoard[pacmanPosition.i][pacmanPosition.j])) {
@@ -657,6 +664,37 @@ function UpdatePosition() {
         npcMoveCycle = (npcMoveCycle + 1) % 3 //MPCs move every 3 cycles
         if (npcMoveCycle == 2) {
             //todo:move npcs
+            let counter = 0;
+            
+            while(counter < enemiesAmount)
+            {
+                let npcCell = [false, false, false, false, false];
+                npcCell[counter] = true;
+                if (JSON.stringify(npcBoard [npcPosition[counter].i][npcPosition[counter].j]) == JSON.stringify(npcCell))
+                {
+                    npcBoard[npcPosition[counter].i][npcPosition[counter].j] = baseBoardCellType.BLANK;
+                }
+                else
+                {
+                    npcCell = npcBoard[npcPosition[counter].i][npcPosition[counter].j];
+                    npcCell[counter] = false;
+                    npcBoard[npcPosition[counter].i][npcPosition[counter].j] = npcCell;
+                }
+                moveNPC(counter);
+                npcCell = [false, false, false, false, false];
+                if (npcBoard[npcPosition[counter].i][npcPosition[counter].j] != baseBoardCellType.BLANK)
+                {
+                    npcCell = npcBoard[npcPosition[counter].i][npcPosition[counter].j];
+                }
+                npcCell[counter] = true;
+                npcBoard[npcPosition[counter].i][ npcPosition[counter].j] = npcCell;
+                counter++;
+
+            }
+
+           
+
+
         }
     }
 
@@ -673,6 +711,36 @@ function UpdatePosition() {
 }
 
 
+function moveNPC(npcCount) {
+    while (true) {
+        moveType = getRandomInt(1, 4);
+        if (moveType == npcMoveType.RIGHT ) {
+            if (npcPosition[npcCount].i < 9 && baseBoard[npcPosition[npcCount].i+1][npcPosition[npcCount].j] != baseBoardCellType.WALL) {
+                npcPosition[npcCount].i++;
+                return;
+            }
+        }
+        else if (moveType == npcMoveType.LEFT) {
+            if (npcPosition[npcCount].i > 0 && baseBoard[npcPosition[npcCount].i -1 ][npcPosition[npcCount].j] != baseBoardCellType.WALL) {
+                npcPosition[npcCount].i--;
+                return;
+            }
+        }
+        else if (moveType == npcMoveType.UP) {
+            if (npcPosition[npcCount].j > 0 && baseBoard[npcPosition[npcCount].i][npcPosition[npcCount].j - 1] != baseBoardCellType.WALL) {
+                npcPosition[npcCount].j--;
+                return;
+            }
+        }
+        else if (moveType == npcMoveType.DOWN) {
+            if (npcPosition[npcCount].j < 9  && baseBoard[npcPosition[npcCount].i][npcPosition[npcCount].j + 1] != baseBoardCellType.WALL) {
+                npcPosition[npcCount].j++;
+                return;
+            }
+        }
+
+    }
+}
 
 /*
  * Returns a random integer between min(inclusive) and max(inclusive).

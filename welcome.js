@@ -16,7 +16,7 @@ function start() {
 
     $("#welcomeMenuButton").click(function (e) { welcomeFunction(); });
 
-    localStorage.setItem("p", "p");
+    localStorage.setItem("p","p");
 
 }
 
