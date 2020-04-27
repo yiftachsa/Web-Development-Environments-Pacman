@@ -5,6 +5,7 @@
     <script type="text/javascript" src="./app.js"></script>
     <script type="text/javascript" src="./welcome.js"></script>
     <script src="./jquery-validation-1.19.1/dist/jquery.validate.js"></script>
+    <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 
 
@@ -64,12 +65,24 @@
             <input type="button" id="connect" name="connect" value="Connect">
         </p>
     </div>
+
     <div id="aboutModal" class="modal" style="display: none;">
-        <div>
-            <span id="spanId">&times;</span>
-            <p>hey</p>
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="spanId" class="close">&times;</span>
+                <h1>About</h1>
+                <h3>THE CREATORS:   Merav Shaked    &    Yiftach Savransky</h3>
+            </div>
+            <div class="modal-body">
+                <p>jQuery plugins used: </p>
+                <p>struggles: We basically had to teach ourselves three different programming langauges at the same time from google.  </p>
+            </div>
+            <div class="modal-footer">
+                <p>sise bgu 2020</p>
+            </div>
         </div>
     </div>
+
     <div id="defsForm"  style="display: none;">
         <form id="form" autocomplete="off">
             <fieldset>
@@ -135,13 +148,13 @@
 
 
     <script>
-        var modal = document.getElementById("aboutModal");
+        let modal = document.getElementById("aboutModal");
 
         // Get the button that opens the modal
-        var btn = document.getElementById("aboutMenuButton");
+        let btn = document.getElementById("aboutMenuButton");
 
         // Get the <span> element that closes the modal
-        var span = document.getElementById("spanId");
+        let span = document.getElementById("spanId");
 
         // When the user clicks on the button, open the modal
         btn.onclick = function () {
@@ -159,6 +172,12 @@
                 modal.style.display = "none";
             }
         }
+        document.addEventListener("keydown", function (event) {
+            let key = event.keyCode || event.which;
+            if (key == 27) {
+                modal.style.display = "none";
+            }
+        });
     </script>
 </body>
 </html>
