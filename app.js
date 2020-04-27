@@ -24,7 +24,7 @@ var npcBoard;
 
 var npcPosition;
 
-
+var wildPosition;
 
 var moveInterval;
 
@@ -33,6 +33,7 @@ var npcMoveCycle = 0;
 
 var cellSize = 60;
 
+var isEaten = false;
 
 const baseBoardCellType = { BLANK: "blank", WALL: "wall" };
 Object.freeze(baseBoardCellType);
@@ -180,50 +181,14 @@ function initBoards() {
 
     initBaseBoard();
 
-    initPacmanBoard();
-
     initNpcBoard();
 
+    initPacmanBoard();
 
 
-    function initNpcBoard() {
-        npcBoard = new Array();
-        npcPosition = new Array();
-        for (let i = 0; i < 10; i++) {
-            npcBoard[i] = new Array();
-            for (let j = 0; j < 10; j++) {
-                if (baseBoard[i][j] == baseBoardCellType.WALL) {
-                    npcBoard[i][j] = baseBoardCellType.WALL;
-                }
-                else {
-                    npcBoard[i][j] = baseBoardCellType.BLANK;
-                }
-            }
-        }
-        let enemiesCount = 0;
-        while (enemiesAmount > enemiesCount) { //Remaining enemies;
-            let emptyCell = findRandomEmptyCell(npcBoard);
-            while (pacmanBoard[emptyCell[0]][emptyCell[1]] == pacmanBoardCellType.PACMAN) {
-                emptyCell = findRandomEmptyCell(npcBoard);
-            }
-            let npcCell = [false, false, false, false, false];
-            npcCell[enemiesCount] = true;
-            npcBoard[emptyCell[0]][emptyCell[1]] = npcCell;
-            npcPosition[enemiesCount] = new Object();
-            npcPosition[enemiesCount].i = emptyCell[0]
-            npcPosition[enemiesCount].j = emptyCell[1]
-            enemiesCount++;
-        }
-        //Wild npc
-        let emptyCell = findRandomEmptyCell(npcBoard);
-        while (pacmanBoard[emptyCell[0]][emptyCell[1]] == pacmanBoardCellType.PACMAN) {
-            emptyCell = findRandomEmptyCell(npcBoard);
-        }
-        let npcCell = [false, false, false, false, false];
-        npcCell[4] = true;
-        npcBoard[emptyCell[0]][emptyCell[1]] = npcCell;
-    }
 
+    
+   
 
     function initPacmanBoard() {
         pacmanBoard = new Array();
@@ -247,8 +212,10 @@ function initBoards() {
                 cnt--;
             }
         }
-
         let pacmanCell = findRandomEmptyCell(pacmanBoard);
+        while (npcBoard[pacmanCell[0]][pacmanCell[1]] == new Array()) {
+            pacmanCell = findRandomEmptyCell(pacmanBoard);
+        }
         pacmanPosition.i = pacmanCell[0];
         pacmanPosition.j = pacmanCell[1];
         pacmanBoard[pacmanCell[0]][pacmanCell[1]] = pacmanBoardCellType.PACMAN;
@@ -316,6 +283,91 @@ function initBoards() {
             }
         }
     }
+}
+
+
+function initNpcBoard() {
+    npcBoard = new Array();
+    npcPosition = new Array();
+    for (let i = 0; i < 10; i++) {
+        npcBoard[i] = new Array();
+        for (let j = 0; j < 10; j++) {
+            if (baseBoard[i][j] == baseBoardCellType.WALL) {
+                npcBoard[i][j] = baseBoardCellType.WALL;
+            }
+            else {
+                npcBoard[i][j] = baseBoardCellType.BLANK;
+            }
+        }
+    }
+    let enemiesCount = 0;
+    while (enemiesAmount > enemiesCount) { //Remaining enemies;
+        /*let emptyCell = findRandomEmptyCell(npcBoard);
+        while (pacmanBoard[emptyCell[0]][emptyCell[1]] == pacmanBoardCellType.PACMAN) {
+            emptyCell = findRandomEmptyCell(npcBoard);
+        }
+        let npcCell = [false, false, false, false, false];
+        npcCell[enemiesCount] = true;
+        npcBoard[emptyCell[0]][emptyCell[1]] = npcCell;
+        npcPosition[enemiesCount] = new Object();
+        npcPosition[enemiesCount].i = emptyCell[0]
+        npcPosition[enemiesCount].j = emptyCell[1]
+        enemiesCount++;
+        */
+
+        let emptyCell = new Array(2);
+        let npcCell = [false, false, false, false, false];
+        npcCell[enemiesCount] = true;
+        if (enemiesCount == 0) {
+            emptyCell[0] = 0;
+            emptyCell[1] = 0;
+        }
+        else if (enemiesCount == 1) {
+            emptyCell[0] = 9;
+            emptyCell[1] = 9;
+        }
+
+        else if (enemiesCount == 2) {
+            emptyCell[0] = 0;
+            emptyCell[1] = 9;
+        }
+        else if (enemiesCount == 3) {
+            emptyCell[0] = 9;
+            emptyCell[1] = 0;
+        }
+        npcBoard[emptyCell[0]][emptyCell[1]] = npcCell;
+        npcPosition[enemiesCount] = new Object();
+        npcPosition[enemiesCount].i = emptyCell[0]
+        npcPosition[enemiesCount].j = emptyCell[1]
+        enemiesCount++;
+    }
+
+    if (!isEaten) {
+        initNpcWild();
+    }
+
+}
+
+
+function initNpcWild() {
+
+    if (wildPosition == undefined) {
+        //Wild npc
+        let emptyCell = findRandomEmptyCell(npcBoard);
+        /*while (pacmanBoard[emptyCell[0]][emptyCell[1]] == pacmanBoardCellType.PACMAN) {
+            emptyCell = findRandomEmptyCell(npcBoard);
+        }
+        */
+        wildPosition = new Object();
+        wildPosition.i = emptyCell[0]
+        wildPosition.j = emptyCell[1]
+    }
+
+    let npcCell = [false, false, false, false, false];
+    npcCell[4] = true;
+
+    npcBoard[wildPosition.i][wildPosition.j] = npcCell;
+
 }
 
 /*
@@ -577,7 +629,18 @@ function UpdatePosition() {
         if (doesContainsEnemy(npcBoard[pacmanPosition.i][pacmanPosition.j])) {
             alert("remove 1 life");
             lifesRemain--;
+            score = score - 10;
             enconteredEnemy = true;
+            initNpcBoard();
+            let pacmanCell = findRandomEmptyCell(pacmanBoard);
+            while (npcBoard[pacmanCell[0]][pacmanCell[1]] == new Array()) {
+                pacmanCell = findRandomEmptyCell(pacmanBoard);
+            }
+            pacmanPosition.i = pacmanCell[0];
+            pacmanPosition.j = pacmanCell[1];
+            pacmanBoard[pacmanCell[0]][pacmanCell[1]] = pacmanBoardCellType.PACMAN;
+
+
         }
     }
     if (!enconteredEnemy) {
@@ -586,6 +649,7 @@ function UpdatePosition() {
             if (npcBoard[pacmanPosition.i][pacmanPosition.j][4] == true) {
                 score = score + 50;
                 npcBoard[pacmanPosition.i][pacmanPosition.j] = baseBoardCellType.BLANK;
+                isEaten = true;
             }
         }
         //interaction with pacmanBoard elements
