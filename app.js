@@ -654,8 +654,8 @@ function UpdatePosition() {
 
     function moveNPCs() {
         //todo
-        npcMoveCycle = (npcMoveCycle + 1) % 3 //MPCs move every 3 cycles
-        if (npcMoveCycle == 2) {
+        npcMoveCycle = (npcMoveCycle + 1) % 4 //MPCs move every 4 cycles
+        if (npcMoveCycle == 3) {
             //todo:move npcs
         }
     }
