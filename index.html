@@ -3,11 +3,14 @@
 <head>
     <script src="./jquery-3.4.1.slim.min.js"></script>
     <script type="text/javascript" src="./app.js"></script>
-    <!--<script type="text/javascript" src="./about.js"></script>-->
+    <script type="text/javascript" src="./welcome.js"></script>
     <script src="./jquery-validation-1.19.1/dist/jquery.validate.js"></script>
 </head>
 
+
+
 <body>
+
     <div id="menu" align="center">
         <input type="button" id="welcomeMenuButton" value="Welcome">
         <input type="button" id="signupMenuButton" value="Signup">
@@ -15,16 +18,59 @@
         <input type="button" id="aboutMenuButton" value=" About">
     </div>
 
-    <div id="welcome" style="display: none;">
-        <button id="button">BBBBBB</button>
+    <div id="welcome">
+        <input type="button" id="signupButtom" name="signup" value="Signup">
+        <input type="button" id="loginByttom" name="login" value="Login">
     </div>
-    <div id="aboutModal" class="modal">
+    <div id="signup" name="signup" style="display: none;">
+        <p name="usernameP">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username"><br>
+        </p>
+        <p name="passwordP">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"><br>
+        </p>
+        <p name="passwordConfirmP">
+            <label for="passwordConfirm">Confirm password</label>
+            <input type="password" id="passwordConfirm" name="passwordConfirm"><br>
+        </p>
+        <p name="fullNameP">
+            <label for="fullName">Full name</label>
+            <input type="text" id="fullName" name="fullName"><br>
+        </p>
+        <p name="emailP">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email"><br>
+        </p>
+        <p action="/action_page.php" name="birthdateP">
+            <label for="birthday">Birthday:</label>
+            <input type="date" id="birthday" name="birthday">
+        </p>
+        <p>
+            <input type="button" id="submit" name="submit" value="Submit">
+        </p>
+    </div>
+    <div id="login" style="display: none;">
+        <p>
+            <label for="usernameConnect">Username</label>
+            <input type="text" id="usernameConnect" name="usernameConnect"><br>
+        </p>
+        <p>
+            <label for="passwordConnect">Password</label>
+            <input type="password" id="passwordConnect" name="passwordConnect"><br>
+        </p>
+        <p>
+            <input type="button" id="connect" name="connect" value="Connect">
+        </p>
+    </div>
+    <div id="aboutModal" class="modal" style="display: none;">
         <div>
             <span id="spanId">&times;</span>
             <p>hey</p>
         </div>
     </div>
-    <div id="defsForm">
+    <div id="defsForm"  style="display: none;">
         <form id="form" autocomplete="off">
             <fieldset>
                 <legend>Decide the intensity of your challenge</legend>

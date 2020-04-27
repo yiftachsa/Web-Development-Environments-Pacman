@@ -1,4 +1,3 @@
-
 /*
 * Main canvas gaming space
 */
@@ -23,6 +22,9 @@ var pacmanBoard;
 */
 var npcBoard;
 
+var npcPosition;
+
+var wildPosition;
 
 var moveInterval;
 
@@ -31,11 +33,14 @@ var npcMoveCycle = 0;
 
 var cellSize = 60;
 
+var isEaten;
 
 const baseBoardCellType = { BLANK: "blank", WALL: "wall" };
 Object.freeze(baseBoardCellType);
 const pacmanBoardCellType = { LOWSCOREFOOD: "lowScoreFood", MEDSCOREFOOD: "medScoreFood", HIGHSCOREFOOD: "highScoreFood", PACMAN: "pacman", CLOCK: "clock", AVIVBERRY: "avivBerry" };
 Object.freeze(pacmanBoardCellType);
+const npcMoveType = { RIGHT: 1, LEFT: 2 , UP: 3 , DOWN: 4};
+Object.freeze(npcMoveType);
 
 //Game variables
 var lifesRemain;
@@ -83,6 +88,7 @@ function startGame() {
     lifesRemain = 5;
     start_time = new Date();
     pac_color = "yellow";
+    isEaten = false;
 
     //updating the user postion - also impacts player's speed
     moveInterval = setInterval(UpdatePosition, 140);
@@ -176,46 +182,14 @@ function initBoards() {
 
     initBaseBoard();
 
-    initPacmanBoard();
-
     initNpcBoard();
 
+    initPacmanBoard();
 
 
-    function initNpcBoard() {
-        npcBoard = new Array();
-        for (let i = 0; i < 10; i++) {
-            npcBoard[i] = new Array();
-            for (let j = 0; j < 10; j++) {
-                if (baseBoard[i][j] == baseBoardCellType.WALL) {
-                    npcBoard[i][j] = baseBoardCellType.WALL;
-                }
-                else {
-                    npcBoard[i][j] = baseBoardCellType.BLANK;
-                }
-            }
-        }
-        let enemiesCount = 0;
-        while (enemiesAmount > enemiesCount) { //Remaining enemies;
-            let emptyCell = findRandomEmptyCell(npcBoard);
-            while (pacmanBoard[emptyCell[0]][emptyCell[1]] == pacmanBoardCellType.PACMAN) {
-                emptyCell = findRandomEmptyCell(npcBoard);
-            }
-            let npcCell = [false, false, false, false, false];
-            npcCell[enemiesCount] = true;
-            npcBoard[emptyCell[0]][emptyCell[1]] = npcCell;
-            enemiesCount++;
-        }
-        //Wild npc
-        let emptyCell = findRandomEmptyCell(npcBoard);
-        while (pacmanBoard[emptyCell[0]][emptyCell[1]] == pacmanBoardCellType.PACMAN) {
-            emptyCell = findRandomEmptyCell(npcBoard);
-        }
-        let npcCell = [false, false, false, false, false];
-        npcCell[4] = true;
-        npcBoard[emptyCell[0]][emptyCell[1]] = npcCell;
-    }
 
+    
+   
 
     function initPacmanBoard() {
         pacmanBoard = new Array();
@@ -239,8 +213,10 @@ function initBoards() {
                 cnt--;
             }
         }
-
         let pacmanCell = findRandomEmptyCell(pacmanBoard);
+        while (npcBoard[pacmanCell[0]][pacmanCell[1]] == new Array()) {
+            pacmanCell = findRandomEmptyCell(pacmanBoard);
+        }
         pacmanPosition.i = pacmanCell[0];
         pacmanPosition.j = pacmanCell[1];
         pacmanBoard[pacmanCell[0]][pacmanCell[1]] = pacmanBoardCellType.PACMAN;
@@ -308,6 +284,91 @@ function initBoards() {
             }
         }
     }
+}
+
+
+function initNpcBoard() {
+    npcBoard = new Array();
+    npcPosition = new Array();
+    for (let i = 0; i < 10; i++) {
+        npcBoard[i] = new Array();
+        for (let j = 0; j < 10; j++) {
+            if (baseBoard[i][j] == baseBoardCellType.WALL) {
+                npcBoard[i][j] = baseBoardCellType.WALL;
+            }
+            else {
+                npcBoard[i][j] = baseBoardCellType.BLANK;
+            }
+        }
+    }
+    let enemiesCount = 0;
+    while (enemiesAmount > enemiesCount) { //Remaining enemies;
+        /*let emptyCell = findRandomEmptyCell(npcBoard);
+        while (pacmanBoard[emptyCell[0]][emptyCell[1]] == pacmanBoardCellType.PACMAN) {
+            emptyCell = findRandomEmptyCell(npcBoard);
+        }
+        let npcCell = [false, false, false, false, false];
+        npcCell[enemiesCount] = true;
+        npcBoard[emptyCell[0]][emptyCell[1]] = npcCell;
+        npcPosition[enemiesCount] = new Object();
+        npcPosition[enemiesCount].i = emptyCell[0]
+        npcPosition[enemiesCount].j = emptyCell[1]
+        enemiesCount++;
+        */
+
+        let emptyCell = new Array(2);
+        let npcCell = [false, false, false, false, false];
+        npcCell[enemiesCount] = true;
+        if (enemiesCount == 0) {
+            emptyCell[0] = 0;
+            emptyCell[1] = 0;
+        }
+        else if (enemiesCount == 1) {
+            emptyCell[0] = 9;
+            emptyCell[1] = 9;
+        }
+
+        else if (enemiesCount == 2) {
+            emptyCell[0] = 0;
+            emptyCell[1] = 9;
+        }
+        else if (enemiesCount == 3) {
+            emptyCell[0] = 9;
+            emptyCell[1] = 0;
+        }
+        npcBoard[emptyCell[0]][emptyCell[1]] = npcCell;
+        npcPosition[enemiesCount] = new Object();
+        npcPosition[enemiesCount].i = emptyCell[0]
+        npcPosition[enemiesCount].j = emptyCell[1]
+        enemiesCount++;
+    }
+
+    if (!isEaten) {
+        initNpcWild();
+    }
+
+}
+
+
+function initNpcWild() {
+
+    if (wildPosition == undefined) {
+        //Wild npc
+        let emptyCell = findRandomEmptyCell(npcBoard);
+        /*while (pacmanBoard[emptyCell[0]][emptyCell[1]] == pacmanBoardCellType.PACMAN) {
+            emptyCell = findRandomEmptyCell(npcBoard);
+        }
+        */
+        wildPosition = new Object();
+        wildPosition.i = emptyCell[0]
+        wildPosition.j = emptyCell[1]
+    }
+
+    let npcCell = [false, false, false, false, false];
+    npcCell[4] = true;
+
+    npcBoard[wildPosition.i][wildPosition.j] = npcCell;
+
 }
 
 /*
@@ -429,11 +490,11 @@ function Draw() {
                 break;
         }
         context.fill();
-        
+
         context.beginPath();
         context.font = '10px serif';
         context.fillStyle = "Black";
-        context.fillText(text, center.x-4, center.y+3);
+        context.fillText(text, center.x - 4, center.y + 3);
         context.fill();
     }
     function drawBerry(center) {
@@ -443,7 +504,7 @@ function Draw() {
         context.arc(center.x, center.y, 7, 0, 2 * Math.PI);
         context.arc(center.x - 10, center.y - 10, 7, 0, 2 * Math.PI);
         context.arc(center.x - 5, center.y - 5, 7, 0, 2 * Math.PI);
-        
+
         context.fillStyle = "Red";
         context.fill();
     }
@@ -484,8 +545,6 @@ function Draw() {
         }
         //context.fill();
 
-
-
         context.beginPath();
         context.fillStyle = color;
         context.arc(center.x, center.y, 20, Math.PI, 2 * Math.PI);
@@ -495,15 +554,12 @@ function Draw() {
         context.closePath();
         context.fill();
 
-
-
-
         context.beginPath();
         context.font = '10px serif';
         context.fillStyle = "Black";
-        context.fillText(text, center.x-15, center.y+2);
+        context.fillText(text, center.x - 15, center.y + 2);
         context.fill();
-        
+
     }
 }
 
@@ -555,6 +611,8 @@ function drawPacman(center) {
     context.fill();
 }
 
+
+
 function UpdatePosition() {
     //removing previous pacman location
     pacmanBoard[pacmanPosition.i][pacmanPosition.j] = baseBoardCellType.BLANK;
@@ -565,12 +623,25 @@ function UpdatePosition() {
 
     let enconteredEnemy = false;
 
+    
+    
     if (npcBoard[pacmanPosition.i][pacmanPosition.j] != baseBoardCellType.BLANK) {
         //interaction with enemies
         if (doesContainsEnemy(npcBoard[pacmanPosition.i][pacmanPosition.j])) {
             alert("remove 1 life");
             lifesRemain--;
+            score = score-10;
             enconteredEnemy = true;
+            initNpcBoard();
+            let pacmanCell = findRandomEmptyCell(pacmanBoard);
+            while (npcBoard[pacmanCell[0]][pacmanCell[1]] == new Array()) {
+                pacmanCell = findRandomEmptyCell(pacmanBoard);
+            }
+            pacmanPosition.i = pacmanCell[0];
+            pacmanPosition.j = pacmanCell[1];
+            pacmanBoard[pacmanCell[0]][pacmanCell[1]] = pacmanBoardCellType.PACMAN;
+
+
         }
     }
     if (!enconteredEnemy) {
@@ -579,6 +650,7 @@ function UpdatePosition() {
             if (npcBoard[pacmanPosition.i][pacmanPosition.j][4] == true) {
                 score = score + 50;
                 npcBoard[pacmanPosition.i][pacmanPosition.j] = baseBoardCellType.BLANK;
+                isEaten = true;
             }
         }
         //interaction with pacmanBoard elements
@@ -657,6 +729,37 @@ function UpdatePosition() {
         npcMoveCycle = (npcMoveCycle + 1) % 4 //MPCs move every 4 cycles
         if (npcMoveCycle == 3) {
             //todo:move npcs
+            let counter = 0;
+            
+            while(counter < enemiesAmount)
+            {
+                let npcCell = [false, false, false, false, false];
+                npcCell[counter] = true;
+                if (JSON.stringify(npcBoard [npcPosition[counter].i][npcPosition[counter].j]) == JSON.stringify(npcCell))
+                {
+                    npcBoard[npcPosition[counter].i][npcPosition[counter].j] = baseBoardCellType.BLANK;
+                }
+                else
+                {
+                    npcCell = npcBoard[npcPosition[counter].i][npcPosition[counter].j];
+                    npcCell[counter] = false;
+                    npcBoard[npcPosition[counter].i][npcPosition[counter].j] = npcCell;
+                }
+                moveNPC(counter);
+                npcCell = [false, false, false, false, false];
+                if (npcBoard[npcPosition[counter].i][npcPosition[counter].j] != baseBoardCellType.BLANK)
+                {
+                    npcCell = npcBoard[npcPosition[counter].i][npcPosition[counter].j];
+                }
+                npcCell[counter] = true;
+                npcBoard[npcPosition[counter].i][ npcPosition[counter].j] = npcCell;
+                counter++;
+
+            }
+
+           
+
+
         }
     }
 
@@ -673,6 +776,36 @@ function UpdatePosition() {
 }
 
 
+function moveNPC(npcCount) {
+    while (true) {
+        moveType = getRandomInt(1, 4);
+        if (moveType == npcMoveType.RIGHT ) {
+            if (npcPosition[npcCount].i < 9 && baseBoard[npcPosition[npcCount].i+1][npcPosition[npcCount].j] != baseBoardCellType.WALL) {
+                npcPosition[npcCount].i++;
+                return;
+            }
+        }
+        else if (moveType == npcMoveType.LEFT) {
+            if (npcPosition[npcCount].i > 0 && baseBoard[npcPosition[npcCount].i -1 ][npcPosition[npcCount].j] != baseBoardCellType.WALL) {
+                npcPosition[npcCount].i--;
+                return;
+            }
+        }
+        else if (moveType == npcMoveType.UP) {
+            if (npcPosition[npcCount].j > 0 && baseBoard[npcPosition[npcCount].i][npcPosition[npcCount].j - 1] != baseBoardCellType.WALL) {
+                npcPosition[npcCount].j--;
+                return;
+            }
+        }
+        else if (moveType == npcMoveType.DOWN) {
+            if (npcPosition[npcCount].j < 9  && baseBoard[npcPosition[npcCount].i][npcPosition[npcCount].j + 1] != baseBoardCellType.WALL) {
+                npcPosition[npcCount].j++;
+                return;
+            }
+        }
+
+    }
+}
 
 /*
  * Returns a random integer between min(inclusive) and max(inclusive).
