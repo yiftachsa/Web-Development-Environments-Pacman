@@ -33,7 +33,7 @@ var npcMoveCycle = 0;
 
 var cellSize = 60;
 
-var isEaten = false;
+var isEaten;
 
 const baseBoardCellType = { BLANK: "blank", WALL: "wall" };
 Object.freeze(baseBoardCellType);
@@ -88,6 +88,7 @@ function startGame() {
     lifesRemain = 5;
     start_time = new Date();
     pac_color = "yellow";
+    isEaten = false;
 
     //updating the user postion - also impacts player's speed
     moveInterval = setInterval(UpdatePosition, 140);
@@ -629,7 +630,7 @@ function UpdatePosition() {
         if (doesContainsEnemy(npcBoard[pacmanPosition.i][pacmanPosition.j])) {
             alert("remove 1 life");
             lifesRemain--;
-            score = score - 10;
+            score = score-10;
             enconteredEnemy = true;
             initNpcBoard();
             let pacmanCell = findRandomEmptyCell(pacmanBoard);
