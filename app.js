@@ -95,7 +95,7 @@ function startGame() {
 
     //switchDevs
     $("#defsForm").hide();
-    $("#game").show();
+    $("#game").css("display", "table");
 }
 
 function initGameEnvironment() {
@@ -112,6 +112,18 @@ function initGameEnvironment() {
     highColor = $("#highScoreColor").val();
     timeLimit = $("#timeLimitNum").val();
     enemiesAmount = $("#enemiesQuantity").val();
+
+    //update definitions display
+    $("#upKeyDisplay").text("UP key: " + $("#upKeybutton").val());
+    $("#downKeyDisplay").text("DOWN key: " + $("#downKeybutton").val());
+    $("#leftKeyDisplay").text("LEFT key: " + $("#leftKeybutton").val());
+    $("#rightKeyDisplay").text("RIGHT key: " + $("#rightKeybutton").val());
+    $("#foodQuantityDisplay").text("Food Quantity: " + foodAmount );
+    $("#lowColorDisplay").prop("value", lowColor);
+    $("#medColorDisplay").prop("value", medColor);
+    $("#highColorDisplay").prop("value", highColor);
+    $("#timeLimitNumDisplay").text("Time Limit: " + timeLimit);
+    $("#enemiesQuantityDisplay").text("Enemies: " + enemiesAmount);
 }
 
 /*
@@ -167,10 +179,10 @@ function randomizeDefs() {
     $("#highScoreColor").prop("value", highColor);
     $("#timeLimitNum").prop("value", timeLimit);
     $("#enemiesQuantity").prop("value", enemiesAmount);
-    $("#upKeybutton").prop("value", ArrowUp);
-    $("#downKeybutton").prop("value", ArrowDown);
-    $("#leftKeybutton").prop("value", ArrowLeft);
-    $("#rightKeybutton").prop("value", ArrowRight);
+    $("#upKeybutton").prop("value", "ArrowUp");
+    $("#downKeybutton").prop("value", "ArrowDown");
+    $("#leftKeybutton").prop("value", "ArrowLeft");
+    $("#rightKeybutton").prop("value", "ArrowRight");
 
 }
 

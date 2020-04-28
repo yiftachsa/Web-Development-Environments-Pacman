@@ -18,7 +18,6 @@
         <input type="button" id="loginMenuButton" value="Login">
         <input type="button" id="aboutMenuButton" value=" About">
     </div>
-
     <div id="welcome">
         <input type="button" id="signupButtom" name="signup" value="Signup">
         <input type="button" id="loginByttom" name="login" value="Login">
@@ -83,7 +82,7 @@
         </div>
     </div>
 
-    <div id="defsForm"  style="display: none;">
+    <div id="defsForm" style="display: none;">
         <form id="form" autocomplete="off">
             <fieldset>
                 <legend>Decide the intensity of your challenge</legend>
@@ -134,16 +133,37 @@
             </fieldset>
         </form>
     </div>
-    <div id="game" style="display: none;">
-        <div id="score">
-            <label for="lblScore">SCORE:</label>
-            <input id="lblScore" type="text" />
+    <div id="game" hidden style="width: 80%; display: none;">
+        <div style="display: table-row;">
+            <div style="display: table-cell;">
+                <div id="score">
+                    <label for="lblScore">SCORE:</label>
+                    <input id="lblScore" type="text" />
+                </div>
+                <div id="time">
+                    <label for="lblTime">TIME:</label>
+                    <input id="lblTime" type="text" />
+                </div>
+                <canvas id="canvas" height="600" width="600"></canvas>
+
+            </div>
+
+            <div id="definitionDisplay" style="display: table-cell;">
+                <div id="upKeyDisplay"></div>
+                <div id="downKeyDisplay"></div>
+                <div id="leftKeyDisplay"></div>
+                <div id="rightKeyDisplay"></div>
+                <div id="foodQuantityDisplay"></div>
+                <label for="lowColorDisplay">Low score color:</label>
+                <input type="color" id="lowColorDisplay" disabled>
+                <label for="medColorDisplay"><br />Medium score color:</label>
+                <input type="color" id="medColorDisplay" disabled>
+                <label for="highColorDisplay"><br />High score color:</label>
+                <input type="color" id="highColorDisplay" disabled>
+                <div id="timeLimitNumDisplay"></div>
+                <div id="enemiesQuantityDisplay"></div>
+            </div>
         </div>
-        <div id="time">
-            <label for="lblTime">TIME:</label>
-            <input id="lblTime" type="text" />
-        </div>
-        <canvas id="canvas" height="600" width="600"></canvas>
     </div>
 
 
