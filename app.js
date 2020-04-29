@@ -34,7 +34,7 @@ var npcMoveCycle = 0;
 var cellSize = 60;
 /*
  * Media
- */ 
+ */
 var avivBerryImage;
 var clockImage;
 var audioElement
@@ -45,7 +45,7 @@ const baseBoardCellType = { BLANK: "blank", WALL: "wall" };
 Object.freeze(baseBoardCellType);
 const pacmanBoardCellType = { LOWSCOREFOOD: "lowScoreFood", MEDSCOREFOOD: "medScoreFood", HIGHSCOREFOOD: "highScoreFood", PACMAN: "pacman", CLOCK: "clock", AVIVBERRY: "avivBerry" };
 Object.freeze(pacmanBoardCellType);
-const npcMoveType = { RIGHT: 1, LEFT: 2 , UP: 3 , DOWN: 4};
+const npcMoveType = { RIGHT: 1, LEFT: 2, UP: 3, DOWN: 4 };
 Object.freeze(npcMoveType);
 
 //Game variables
@@ -126,7 +126,7 @@ function initGameEnvironment() {
     $("#downKeyDisplay").text("DOWN key: " + $("#downKeybutton").val());
     $("#leftKeyDisplay").text("LEFT key: " + $("#leftKeybutton").val());
     $("#rightKeyDisplay").text("RIGHT key: " + $("#rightKeybutton").val());
-    $("#foodQuantityDisplay").text("Food Quantity: " + foodAmount );
+    $("#foodQuantityDisplay").text("Food Quantity: " + foodAmount);
     $("#lowColorDisplay").prop("value", lowColor);
     $("#medColorDisplay").prop("value", medColor);
     $("#highColorDisplay").prop("value", highColor);
@@ -208,8 +208,8 @@ function initBoards() {
 
 
 
-    
-   
+
+
 
     function initPacmanBoard() {
         pacmanBoard = new Array();
@@ -636,14 +636,14 @@ function UpdatePosition() {
 
     let enconteredEnemy = false;
 
-    
-    
+
+
     if (npcBoard[pacmanPosition.i][pacmanPosition.j] != baseBoardCellType.BLANK) {
         //interaction with enemies
         if (doesContainsEnemy(npcBoard[pacmanPosition.i][pacmanPosition.j])) {
-            alert("remove 1 life");
+            //    alert("remove 1 life");
             lifesRemain--;
-            score = score-10;
+            score = score - 10;
             enconteredEnemy = true;
             initNpcBoard();
             let pacmanCell = findRandomEmptyCell(pacmanBoard);
@@ -652,8 +652,7 @@ function UpdatePosition() {
             }
             pacmanPosition.i = pacmanCell[0];
             pacmanPosition.j = pacmanCell[1];
-            pacmanBoard[pacmanCell[0]][pacmanCell[1]] = pacmanBoardCellType.PACMAN;
-
+            pacmanBoard[pacmanPosition.i][pacmanPosition.j] = baseBoardCellType.PACMAN;
 
         }
     }
@@ -678,10 +677,10 @@ function UpdatePosition() {
             foodRemain--;
         } else if (pacmanBoard[pacmanPosition.i][pacmanPosition.j] == pacmanBoardCellType.AVIVBERRY) {
             lifesRemain++;
-            alert("added a life");
+            // alert("added a life");
         } else if (pacmanBoard[pacmanPosition.i][pacmanPosition.j] == pacmanBoardCellType.CLOCK) {
             timeLimit = timeLimit + 60;
-            alert("increased time limit");
+            //  alert("increased time limit");
         }
 
         //actually move pacman
@@ -741,40 +740,61 @@ function UpdatePosition() {
         }
     }
 
+    function moveWildPosition() {
+        if (!isEaten) { //wild moving - fast
+            let wildCell = [false, false, false, false, true];
+            if (JSON.stringify(npcBoard[wildPosition.i][wildPosition.j]) == JSON.stringify(wildCell)) {
+                npcBoard[wildPosition.i][wildPosition.j] = baseBoardCellType.BLANK;
+            }
+            else {
+                wildCell = npcBoard[wildPosition.i][wildPosition.j];
+                wildCell[4] = false;
+                npcBoard[wildPosition.i][wildPosition.j] = wildCell;
+            }
+            moveWild()
+            wildCell = [false, false, false, false, false];
+            if (npcBoard[wildPosition.i][wildPosition.j] != baseBoardCellType.BLANK) {
+                wildCell = npcBoard[wildPosition.i][wildPosition.j];
+            }
+            wildCell[4] = true;
+            npcBoard[wildPosition.i][wildPosition.j] = wildCell;
+        }
+    }
+
     function moveNPCs() {
-        //todo
+
+
         npcMoveCycle = (npcMoveCycle + 1) % 4 //MPCs move every 4 cycles
+
+        moveWildPosition();
+
         if (npcMoveCycle == 3) {
             //todo:move npcs
             let counter = 0;
-            
-            while(counter < enemiesAmount)
-            {
+
+            while (counter < enemiesAmount) {
                 let npcCell = [false, false, false, false, false];
                 npcCell[counter] = true;
-                if (JSON.stringify(npcBoard [npcPosition[counter].i][npcPosition[counter].j]) == JSON.stringify(npcCell))
-                {
+                if (JSON.stringify(npcBoard[npcPosition[counter].i][npcPosition[counter].j]) == JSON.stringify(npcCell)) {
                     npcBoard[npcPosition[counter].i][npcPosition[counter].j] = baseBoardCellType.BLANK;
                 }
-                else
-                {
+                else {
                     npcCell = npcBoard[npcPosition[counter].i][npcPosition[counter].j];
                     npcCell[counter] = false;
                     npcBoard[npcPosition[counter].i][npcPosition[counter].j] = npcCell;
                 }
-                moveNPC(counter);
+                moveNPCSmart(counter);
                 npcCell = [false, false, false, false, false];
-                if (npcBoard[npcPosition[counter].i][npcPosition[counter].j] != baseBoardCellType.BLANK)
-                {
+                if (npcBoard[npcPosition[counter].i][npcPosition[counter].j] != baseBoardCellType.BLANK) {
                     npcCell = npcBoard[npcPosition[counter].i][npcPosition[counter].j];
                 }
                 npcCell[counter] = true;
-                npcBoard[npcPosition[counter].i][ npcPosition[counter].j] = npcCell;
+                npcBoard[npcPosition[counter].i][npcPosition[counter].j] = npcCell;
                 counter++;
 
             }
 
-           
+
 
 
         }
@@ -795,14 +815,14 @@ function UpdatePosition() {
 function moveNPC(npcCount) {
     while (true) {
         moveType = getRandomInt(1, 4);
-        if (moveType == npcMoveType.RIGHT ) {
-            if (npcPosition[npcCount].i < 9 && baseBoard[npcPosition[npcCount].i+1][npcPosition[npcCount].j] != baseBoardCellType.WALL) {
+        if (moveType == npcMoveType.RIGHT) {
+            if (npcPosition[npcCount].i < 9 && baseBoard[npcPosition[npcCount].i + 1][npcPosition[npcCount].j] != baseBoardCellType.WALL) {
                 npcPosition[npcCount].i++;
                 return;
             }
         }
         else if (moveType == npcMoveType.LEFT) {
-            if (npcPosition[npcCount].i > 0 && baseBoard[npcPosition[npcCount].i -1 ][npcPosition[npcCount].j] != baseBoardCellType.WALL) {
+            if (npcPosition[npcCount].i > 0 && baseBoard[npcPosition[npcCount].i - 1][npcPosition[npcCount].j] != baseBoardCellType.WALL) {
                 npcPosition[npcCount].i--;
                 return;
             }
@@ -814,8 +834,149 @@ function moveNPC(npcCount) {
             }
         }
         else if (moveType == npcMoveType.DOWN) {
-            if (npcPosition[npcCount].j < 9  && baseBoard[npcPosition[npcCount].i][npcPosition[npcCount].j + 1] != baseBoardCellType.WALL) {
+            if (npcPosition[npcCount].j < 9 && baseBoard[npcPosition[npcCount].i][npcPosition[npcCount].j + 1] != baseBoardCellType.WALL) {
                 npcPosition[npcCount].j++;
+                return;
+            }
+        }
+
+    }
+}
+
+
+function getMoveInt(npcCount , round) {
+    let random = getRandomInt(0, 1);
+    if (round > 0)
+    {
+        random = getRandomInt(1, 4);
+        return random;
+    }
+    //RIGHT
+    if ((npcPosition[npcCount].i - pacmanPosition.i) < 0) {
+        //UP
+        if ((npcPosition[npcCount].j - pacmanPosition.j) > 0) {
+            if (random == 0) {
+                return npcMoveType.RIGHT;
+            }
+            else {
+                return npcMoveType.UP;
+            }
+        }
+            //DOWN
+        else if ((npcPosition[npcCount].j - pacmanPosition.j) > 0) {
+            if (random == 0) {
+                return npcMoveType.RIGHT;
+            }
+            else {
+                return npcMoveType.DOWN;
+            }
+        }
+        else {
+            return npcMoveType.RIGHT;
+        }
+    }
+        //LEFT   
+    else if ((npcPosition[npcCount].i - pacmanPosition.i) > 0) {
+        //UP
+        if ((npcPosition[npcCount].j - pacmanPosition.j) > 0) {
+            if (random == 0) {
+                return npcMoveType.LEFT;
+            }
+            else {
+                return npcMoveType.UP;
+            }
+        }
+            //DOWN
+        else if ((npcPosition[npcCount].j - pacmanPosition.j) < 0) {
+            if (random == 0) {
+                return npcMoveType.LEFT;
+            }
+            else {
+                return npcMoveType.DOWN;
+            }
+        }
+        else {
+            return npcMoveType.LEFT;
+        }
+    }
+    else {
+        //UP
+        if ((npcPosition[npcCount].j - pacmanPosition.j) > 0) {
+            return npcMoveType.UP;
+
+        }
+            //DOWN
+        else if ((npcPosition[npcCount].j - pacmanPosition.j) <= 0) {
+            return npcMoveType.DOWN;
+
+        }
+    }
+
+
+
+}
+
+
+
+function moveNPCSmart(npcCount) {
+    let round = 0;
+    while (true) {
+        moveType = getMoveInt(npcCount , round);
+        if (moveType == npcMoveType.RIGHT) {
+            if (npcPosition[npcCount].i < 9 && baseBoard[npcPosition[npcCount].i + 1][npcPosition[npcCount].j] != baseBoardCellType.WALL) {
+                npcPosition[npcCount].i++;
+                return;
+            }
+        }
+        else if (moveType == npcMoveType.LEFT) {
+            if (npcPosition[npcCount].i > 0 && baseBoard[npcPosition[npcCount].i - 1][npcPosition[npcCount].j] != baseBoardCellType.WALL) {
+                npcPosition[npcCount].i--;
+                return;
+            }
+        }
+        else if (moveType == npcMoveType.UP) {
+            if (npcPosition[npcCount].j > 0 && baseBoard[npcPosition[npcCount].i][npcPosition[npcCount].j - 1] != baseBoardCellType.WALL) {
+                npcPosition[npcCount].j--;
+                return;
+            }
+        }
+        else if (moveType == npcMoveType.DOWN) {
+            if (npcPosition[npcCount].j < 9 && baseBoard[npcPosition[npcCount].i][npcPosition[npcCount].j + 1] != baseBoardCellType.WALL) {
+                npcPosition[npcCount].j++;
+                return;
+            }
+        }
+        round++;
+    }
+}
+
+
+
+//todo : delete!!!
+function moveWild() {
+    while (true) {
+        moveType = getRandomInt(1, 4);
+        if (moveType == npcMoveType.RIGHT) {
+            if (wildPosition.i < 9 && baseBoard[wildPosition.i + 1][wildPosition.j] != baseBoardCellType.WALL) {
+                wildPosition.i++;
+                return;
+            }
+        }
+        else if (moveType == npcMoveType.LEFT) {
+            if (wildPosition.i > 0 && baseBoard[wildPosition.i - 1][wildPosition.j] != baseBoardCellType.WALL) {
+                wildPosition.i--;
+                return;
+            }
+        }
+        else if (moveType == npcMoveType.UP) {
+            if (wildPosition.j > 0 && baseBoard[wildPosition.i][wildPosition.j - 1] != baseBoardCellType.WALL) {
+                wildPosition.j--;
+                return;
+            }
+        }
+        else if (moveType == npcMoveType.DOWN) {
+            if (wildPosition.j < 9 && baseBoard[wildPosition.i][wildPosition.j + 1] != baseBoardCellType.WALL) {
+                wildPosition.j++;
                 return;
             }
         }
@@ -859,7 +1020,7 @@ function getRandomColor() {
 /**
  * loads all the images needed for the game.
  * from: https://webplatform.github.io/docs/concepts/programming/drawing_images_onto_canvas/
- * */ 
+ * */
 function loadImages() {
     // Create an image object. This is not attached to the DOM and is not part of the page.
     let strawberryImage = new Image();

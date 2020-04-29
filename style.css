@@ -79,3 +79,43 @@
         opacity: 1
     }
 }
+
+
+.centered {
+    font-size: 90px;
+    opacity: 1.0;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    direction: rtl;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+p {
+    font-family: Calibri, Calibri, aboutMeP;
+    font-weight: normal;
+    font-size: 15px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.contents {
+    background: white;
+    width: 75%;
+    padding: 40px;
+    margin: 100px auto;
+    font-family: Calibri;
+    border-radius: 10px;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}

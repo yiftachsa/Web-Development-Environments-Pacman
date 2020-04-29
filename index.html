@@ -5,163 +5,177 @@
     <script type="text/javascript" src="./app.js"></script>
     <script type="text/javascript" src="./welcome.js"></script>
     <script src="./jquery-validation-1.19.1/dist/jquery.validate.js"></script>
+    <style type="text/css">
+        body {
+            background-image: url(pacmanImage.jpg);
+            background-size: cover;
+            background-attachment: fixed;
+        }
+    </style>
+
     <link rel="stylesheet" type="text/css" href="./style.css">
+
 </head>
 
 
 
 <body>
+    <div class="contents">
+        <div id="menu" align="center">
+            <input type="button" id="welcomeMenuButton" value="Welcome">
+            <input type="button" id="signupMenuButton" value="Signup">
+            <input type="button" id="loginMenuButton" value="Login">
+            <input type="button" id="aboutMenuButton" value=" About">
+        </div>
+        <div id="welcome">
+            <br />
+            <img src="pacCoro.jpg" class="center">
+            <br />
+            <br />
+            <input type="button" id="signupButtom" name="signup" value="Signup">
+            <input type="button" id="loginByttom" name="login" value="Login">
+        </div>
+        <div id="signup" name="signup" style="display: none;">
+            <p name="usernameP">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username"><br>
+            </p>
+            <p name="passwordP">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password"><br>
+            </p>
+            <p name="passwordConfirmP">
+                <label for="passwordConfirm">Confirm password</label>
+                <input type="password" id="passwordConfirm" name="passwordConfirm"><br>
+            </p>
+            <p name="fullNameP">
+                <label for="fullName">Full name</label>
+                <input type="text" id="fullName" name="fullName"><br>
+            </p>
+            <p name="emailP">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email"><br>
+            </p>
+            <p action="/action_page.php" name="birthdateP">
+                <label for="birthday">Birthday:</label>
+                <input type="date" id="birthday" name="birthday">
+            </p>
+            <p>
+                <input type="button" id="submit" name="submit" value="Submit">
+            </p>
+        </div>
+        <div id="login" style="display: none;">
+            <p>
+                <label for="usernameConnect">Username</label>
+                <input type="text" id="usernameConnect" name="usernameConnect"><br>
+            </p>
+            <p>
+                <label for="passwordConnect">Password</label>
+                <input type="password" id="passwordConnect" name="passwordConnect"><br>
+            </p>
+            <p>
+                <input type="button" id="connect" name="connect" value="Connect">
+            </p>
+        </div>
 
-    <div id="menu" align="center">
-        <input type="button" id="welcomeMenuButton" value="Welcome">
-        <input type="button" id="signupMenuButton" value="Signup">
-        <input type="button" id="loginMenuButton" value="Login">
-        <input type="button" id="aboutMenuButton" value=" About">
-    </div>
-    <div id="welcome">
-        <input type="button" id="signupButtom" name="signup" value="Signup">
-        <input type="button" id="loginByttom" name="login" value="Login">
-    </div>
-    <div id="signup" name="signup" style="display: none;">
-        <p name="usernameP">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username"><br>
-        </p>
-        <p name="passwordP">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password"><br>
-        </p>
-        <p name="passwordConfirmP">
-            <label for="passwordConfirm">Confirm password</label>
-            <input type="password" id="passwordConfirm" name="passwordConfirm"><br>
-        </p>
-        <p name="fullNameP">
-            <label for="fullName">Full name</label>
-            <input type="text" id="fullName" name="fullName"><br>
-        </p>
-        <p name="emailP">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email"><br>
-        </p>
-        <p action="/action_page.php" name="birthdateP">
-            <label for="birthday">Birthday:</label>
-            <input type="date" id="birthday" name="birthday">
-        </p>
-        <p>
-            <input type="button" id="submit" name="submit" value="Submit">
-        </p>
-    </div>
-    <div id="login" style="display: none;">
-        <p>
-            <label for="usernameConnect">Username</label>
-            <input type="text" id="usernameConnect" name="usernameConnect"><br>
-        </p>
-        <p>
-            <label for="passwordConnect">Password</label>
-            <input type="password" id="passwordConnect" name="passwordConnect"><br>
-        </p>
-        <p>
-            <input type="button" id="connect" name="connect" value="Connect">
-        </p>
-    </div>
-
-    <div id="aboutModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span id="spanId" class="close">&times;</span>
-                <h1>About</h1>
-                <h3>THE CREATORS:   Merav Shaked    &    Yiftach Savransky</h3>
-            </div>
-            <div class="modal-body">
-                <p>jQuery plugins used: </p>
-                <p>struggles: We basically had to teach ourselves three different programming langauges at the same time from google.  </p>
-            </div>
-            <div class="modal-footer">
-                <p>sise bgu 2020</p>
+        <div id="aboutModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span id="spanId" class="close">&times;</span>
+                    <h1>About</h1>
+                    <h3>THE CREATORS:   Merav Shaked    &    Yiftach Savransky</h3>
+                </div>
+                <div class="modal-body">
+                    <p>jQuery plugins used: </p>
+                    <p>struggles: We basically had to teach ourselves three different programming langauges at the same time from google.  </p>
+                </div>
+                <div class="modal-footer">
+                    <p>sise bgu 2020</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="defsForm" style="display: none;">
-        <form id="form" autocomplete="off">
-            <fieldset>
-                <legend>Decide the intensity of your challenge</legend>
-                <div id="chooseKeysDiv">
+        <div id="defsForm" style="display: none;">
+            <form id="form" autocomplete="off">
+                <fieldset>
+                    <legend>Decide the intensity of your challenge</legend>
+                    <div id="chooseKeysDiv">
+                        <p>
+                            Press to choose controls
+                        </p>
+
+                        <label for="upKeybutton">move UP:</label>
+                        <input id="upKeybutton" value="ArrowUp" name="upKeybutton" type="button">
+
+                        <label for="downKeybutton">move DOWN:</label>
+                        <input id="downKeybutton" value="ArrowDown" name="downKeybutton" type="button">
+
+                        <label for="leftKeybutton">move LEFT:</label>
+                        <input id="leftKeybutton" value="ArrowLeft" name="leftKeybutton" type="button">
+
+                        <label for="rightKeybutton">move RIGHT:</label>
+                        <input id="rightKeybutton" value="ArrowRight" name="rightKeybutton" type="button">
+                        <p>
+                            <label for="foodQuantity">Food Quantity (between 50 and 90)</label>
+                            <input type="number" id="foodQuantity" value="50" name="foodQuantity" min="50" max="90">
+                        </p>
+                    </div>
                     <p>
-                        Press to choose controls
+                        Choose colors
                     </p>
-
-                    <label for="upKeybutton">move UP:</label>
-                    <input id="upKeybutton" value="ArrowUp" name="upKeybutton" type="button">
-
-                    <label for="downKeybutton">move DOWN:</label>
-                    <input id="downKeybutton" value="ArrowDown" name="downKeybutton" type="button">
-
-                    <label for="leftKeybutton">move LEFT:</label>
-                    <input id="leftKeybutton" value="ArrowLeft" name="leftKeybutton" type="button">
-
-                    <label for="rightKeybutton">move RIGHT:</label>
-                    <input id="rightKeybutton" value="ArrowRight" name="rightKeybutton" type="button">
                     <p>
-                        <label for="foodQuantity">Food Quantity (between 50 and 90)</label>
-                        <input type="number" id="foodQuantity" value="50" name="foodQuantity" min="50" max="90">
+                        <label for="lowScoreColor">Low score color:</label>
+                        <input type="color" id="lowScoreColor" name="lowScoreColor" value="#ff0000">
+                        <label for="medScoreColor">Medium score color:</label>
+                        <input type="color" id="medScoreColor" name="medScoreColor" value="#E9FF00">
+                        <label for="highScoreColor">High score color:</label>
+                        <input type="color" id="highScoreColor" name="highScoreColor" value="#00FF1B">
                     </p>
-                </div>
-                <p>
-                    Choose colors
-                </p>
-                <p>
-                    <label for="lowScoreColor">Low score color:</label>
-                    <input type="color" id="lowScoreColor" name="lowScoreColor" value="#ff0000">
-                    <label for="medScoreColor">Medium score color:</label>
-                    <input type="color" id="medScoreColor" name="medScoreColor" value="#E9FF00">
-                    <label for="highScoreColor">High score color:</label>
-                    <input type="color" id="highScoreColor" name="highScoreColor" value="#00FF1B">
-                </p>
-                <p>
-                    <label for="timeLimitNum">Time Limit (min: 60 sec, we don't want to make it to hard now, do we?)</label>
-                    <input type="number" id="timeLimitNum" name="timeLimitNum" value="60" min="60">
-                </p>
-                <p>
-                    <label for="enemiesQuantity">How many enemies? (between 1 and 4)</label>
-                    <input type="number" id="enemiesQuantity" name="enemiesQuantity" value="2" min="1" max="4">
-                </p>
-                <p>
-                    <input type="button" id="randomButton" name="randomButton" value="random">
-                    <input type="button" id="startButton" name="startButton" value="Let's GO!!!">
-                </p>
-            </fieldset>
-        </form>
-    </div>
-    <div id="game" hidden style="width: 80%; display: none;">
-        <div style="display: table-row;">
-            <div style="display: table-cell;">
-                <div id="gamesVarsDisplay">
-                    <div id="scoreDiv" style="display: inline-block;">
+                    <p>
+                        <label for="timeLimitNum">Time Limit (min: 60 sec, we don't want to make it to hard now, do we?)</label>
+                        <input type="number" id="timeLimitNum" name="timeLimitNum" value="60" min="60">
+                    </p>
+                    <p>
+                        <label for="enemiesQuantity">How many enemies? (between 1 and 4)</label>
+                        <input type="number" id="enemiesQuantity" name="enemiesQuantity" value="2" min="1" max="4">
+                    </p>
+                    <p>
+                        <input type="button" id="randomButton" name="randomButton" value="random">
+                        <input type="button" id="startButton" name="startButton" value="Let's GO!!!">
+                    </p>
+                </fieldset>
+            </form>
+        </div>
+        <div id="game" hidden style="width: 80%; display: none;">
+            <div style="display: table-row;">
+                <div style="display: table-cell;">
+                    <div id="gamesVarsDisplay">
+                        <div id="scoreDiv" style="display: inline-block;">
+                        </div>
+                        <div id="lifeDiv" style="display: inline-block;">
+                        </div>
+                        <div id="timeDiv" style="display: inline-block;">
+                        </div>
                     </div>
-                    <div id="lifeDiv" style="display: inline-block;">
-                    </div>
-                    <div id="timeDiv" style="display: inline-block;">
-                    </div>
-                </div>
-                <canvas id="canvas" height="600" width="600"></canvas>
+                    <canvas id="canvas" height="600" width="600"></canvas>
 
-            </div>
+                </div>
 
-            <div id="definitionDisplay" style="display: table-cell;">
-                <div id="upKeyDisplay"></div>
-                <div id="downKeyDisplay"></div>
-                <div id="leftKeyDisplay"></div>
-                <div id="rightKeyDisplay"></div>
-                <div id="foodQuantityDisplay"></div>
-                <label for="lowColorDisplay">Low score color:</label>
-                <input type="color" id="lowColorDisplay" disabled>
-                <label for="medColorDisplay"><br />Medium score color:</label>
-                <input type="color" id="medColorDisplay" disabled>
-                <label for="highColorDisplay"><br />High score color:</label>
-                <input type="color" id="highColorDisplay" disabled>
-                <div id="timeLimitNumDisplay"></div>
-                <div id="enemiesQuantityDisplay"></div>
+                <div id="definitionDisplay" style="display: table-cell;">
+                    <div id="upKeyDisplay"></div>
+                    <div id="downKeyDisplay"></div>
+                    <div id="leftKeyDisplay"></div>
+                    <div id="rightKeyDisplay"></div>
+                    <div id="foodQuantityDisplay"></div>
+                    <label for="lowColorDisplay">Low score color:</label>
+                    <input type="color" id="lowColorDisplay" disabled>
+                    <label for="medColorDisplay"><br />Medium score color:</label>
+                    <input type="color" id="medColorDisplay" disabled>
+                    <label for="highColorDisplay"><br />High score color:</label>
+                    <input type="color" id="highColorDisplay" disabled>
+                    <div id="timeLimitNumDisplay"></div>
+                    <div id="enemiesQuantityDisplay"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -199,5 +213,6 @@
             }
         });
     </script>
+
 </body>
 </html>
