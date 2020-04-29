@@ -993,9 +993,19 @@ function gameOver() {
     //stop music
     audioElement.pause();
     audioElement.currentTime = 0;
-    //TODO: display PLAY AGAIN button
+    
     $("#restartText").hide();
     $("#restartStrong").show();
+}
+
+function stopGame() {
+    window.clearInterval(moveInterval);
+    //stop music
+    audioElement.pause();
+    audioElement.currentTime = 0;
+    $("#restartText").show();
+    $("#restartStrong").hide();
+
 }
 
 

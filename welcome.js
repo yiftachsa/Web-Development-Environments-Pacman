@@ -30,7 +30,7 @@ function welcomeFunction() {
     $("#game").hide();
 
     $("#welcome").show();
-    gameOver();
+    stopGame();
 }
 
 function signupFunction() {
@@ -42,7 +42,7 @@ function signupFunction() {
 
     $("#welcome").hide();
     $("#signup").show();
-    gameOver();
+    stopGame();
 }
 
 
@@ -57,7 +57,7 @@ function loginFunction() {
     $("#signup").hide();
 
     $("#login").show();
-    gameOver();
+    stopGame();
 }
 
 function submitFunction() {

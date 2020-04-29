@@ -105,7 +105,8 @@ p {
 }
 
 .contents {
-    background: white;
+    background: #dddddd;
+    /*background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(0,246,255,1) 24%, rgba(0,31,255,1) 50%, rgba(0,246,255,1) 90%,rgba(0,31,255,1) 100%);*/
     width: 75%;
     padding: 40px;
     margin: 100px auto;
