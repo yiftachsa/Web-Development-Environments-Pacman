@@ -30,6 +30,7 @@ var moveInterval;
 
 var isMouthOpen = true;
 var npcMoveCycle = 0;
+var eatenCycle = 0;
 
 var cellSize = 60;
 /*
@@ -80,7 +81,8 @@ function startDefs() {
     $("#chooseKeysDiv>:button").click(function (e) { keySelection(this.id); });
     $("#randomButton").click(function (e) { randomizeDefs(); });
     $("#startButton").click(function (e) { startGame(); });
-
+    //restart button
+    $("#restartButton").click(function (e) { restartGame(); });
 }
 
 
@@ -132,6 +134,14 @@ function initGameEnvironment() {
     $("#highColorDisplay").prop("value", highColor);
     $("#timeLimitNumDisplay").text("Time Limit: " + timeLimit);
     $("#enemiesQuantityDisplay").text("Enemies: " + enemiesAmount);
+
+}
+
+function restartGame() {
+    gameOver();
+    $("#restartText").show();
+    $("#restartStrong").hide();
+    startGame();
 }
 
 /*
@@ -567,6 +577,15 @@ function Draw() {
     }
 }
 
+function updateEaten(wasEaten) {
+    eatenCycle = (eatenCycle + 1) % 14;
+    if (wasEaten && ($("#eatenDiv").is(':empty'))) {
+        $("#eatenDiv").append("<Strong>You got eaten!!!</Strong>");
+    } else if (eatenCycle == 13) {
+        $("#eatenDiv").empty();
+    }
+}
+
 function updateDisplays() {
     $("#scoreDiv").text("SCORE: " + score);
     let timeLeft = timeLimit - time_elapsed;
@@ -653,7 +672,6 @@ function UpdatePosition() {
             pacmanPosition.i = pacmanCell[0];
             pacmanPosition.j = pacmanCell[1];
             pacmanBoard[pacmanPosition.i][pacmanPosition.j] = baseBoardCellType.PACMAN;
-
         }
     }
     if (!enconteredEnemy) {
@@ -677,10 +695,9 @@ function UpdatePosition() {
             foodRemain--;
         } else if (pacmanBoard[pacmanPosition.i][pacmanPosition.j] == pacmanBoardCellType.AVIVBERRY) {
             lifesRemain++;
-            // alert("added a life");
         } else if (pacmanBoard[pacmanPosition.i][pacmanPosition.j] == pacmanBoardCellType.CLOCK) {
-            timeLimit = timeLimit + 60;
-            //  alert("increased time limit");
+            let timeBonus = timeLimit * 0.25;
+            timeLimit = parseInt(timeLimit) + parseInt(timeBonus);
         }
 
         //actually move pacman
@@ -689,18 +706,15 @@ function UpdatePosition() {
     //updating time
     var currentTime = new Date();
     time_elapsed = (currentTime - start_time) / 1000;
-
+    let timeLeft = timeLimit - time_elapsed;
     //Game logic
-    if (score >= 20 && time_elapsed <= 10) {
-        pac_color = "lime";
-    }
     if (foodRemain == 0) { //All food eaten
         gameOver();
         window.alert("Game completed");
     } else if (lifesRemain <= 0) {
         gameOver();
         window.alert("Loser!");
-    } else if (false) { //todo:TIME LIMIT
+    } else if (timeLeft <= 0) { //todo:TIME LIMIT
         if (score >= 100) {
             gameOver();
             window.alert("Winner!");
@@ -710,6 +724,7 @@ function UpdatePosition() {
         }
     } else {
         Draw();
+        updateEaten(enconteredEnemy);
         updateDisplays();
     }
 
@@ -812,6 +827,8 @@ function UpdatePosition() {
     }
 }
 
+
+
 function moveNPC(npcCount) {
     while (true) {
         moveType = getRandomInt(1, 4);
@@ -842,7 +859,6 @@ function moveNPC(npcCount) {
 
     }
 }
-
 
 function getMoveInt(npcCount , round) {
     let random = getRandomInt(0, 1);
@@ -916,8 +932,6 @@ function getMoveInt(npcCount , round) {
 
 }
 
-
-
 function moveNPCSmart(npcCount) {
     let round = 0;
     while (true) {
@@ -949,8 +963,6 @@ function moveNPCSmart(npcCount) {
         round++;
     }
 }
-
-
 
 //todo : delete!!!
 function moveWild() {
@@ -989,7 +1001,19 @@ function gameOver() {
     //stop music
     audioElement.pause();
     audioElement.currentTime = 0;
-    //TODO: display PLAY AGAIN button
+    
+    $("#restartText").hide();
+    $("#restartStrong").show();
+}
+
+function stopGame() {
+    window.clearInterval(moveInterval);
+    //stop music
+    audioElement.pause();
+    audioElement.currentTime = 0;
+    $("#restartText").show();
+    $("#restartStrong").hide();
+
 }
 
 

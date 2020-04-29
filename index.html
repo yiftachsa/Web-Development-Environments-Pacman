@@ -4,10 +4,9 @@
     <script src="./jquery-3.4.1.slim.min.js"></script>
     <script type="text/javascript" src="./app.js"></script>
     <script type="text/javascript" src="./welcome.js"></script>
-    <script src="./jquery-validation-1.19.1/dist/jquery.validate.js"></script>
     <style type="text/css">
         body {
-            background-image: url(pacmanImage.jpg);
+            background-image: url(./resources/pacmanImage.jpg);
             background-size: cover;
             background-attachment: fixed;
         }
@@ -16,8 +15,6 @@
     <link rel="stylesheet" type="text/css" href="./style.css">
 
 </head>
-
-
 
 <body>
     <div class="contents">
@@ -29,13 +26,14 @@
         </div>
         <div id="welcome">
             <br />
-            <img src="pacCoro.jpg" class="center">
+            <img src="./resources/pacCoro.jpg" class="center">
             <br />
-            <br />
-            <input type="button" id="signupButtom" name="signup" value="Signup">
-            <input type="button" id="loginByttom" name="login" value="Login">
+            <div class="center">
+                <input type="button" id="signupButtom" name="signup" value="Signup">
+                <input type="button" id="loginByttom" name="login" value="Login">
+            </div>
         </div>
-        <div id="signup" name="signup" style="display: none;">
+        <div id="signup" name="signup" style="display: none;" class="centerDiv">
             <p name="usernameP">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username"><br>
@@ -64,7 +62,7 @@
                 <input type="button" id="submit" name="submit" value="Submit">
             </p>
         </div>
-        <div id="login" style="display: none;">
+        <div id="login" style="display: none;" class="centerDiv">
             <p>
                 <label for="usernameConnect">Username</label>
                 <input type="text" id="usernameConnect" name="usernameConnect"><br>
@@ -146,13 +144,15 @@
                 </fieldset>
             </form>
         </div>
-        <div id="game" hidden style="width: 80%; display: none;">
+        <div id="game" hidden style="display: none;">
             <div style="display: table-row;">
                 <div style="display: table-cell;">
                     <div id="gamesVarsDisplay">
                         <div id="scoreDiv" style="display: inline-block;">
                         </div>
                         <div id="lifeDiv" style="display: inline-block;">
+                        </div>
+                        <div id="eatenDiv" style="display: inline-block;">
                         </div>
                         <div id="timeDiv" style="display: inline-block;">
                         </div>
@@ -161,23 +161,34 @@
 
                 </div>
 
-                <div id="definitionDisplay" style="display: table-cell;">
-                    <div id="upKeyDisplay"></div>
-                    <div id="downKeyDisplay"></div>
-                    <div id="leftKeyDisplay"></div>
-                    <div id="rightKeyDisplay"></div>
-                    <div id="foodQuantityDisplay"></div>
-                    <label for="lowColorDisplay">Low score color:</label>
-                    <input type="color" id="lowColorDisplay" disabled>
-                    <label for="medColorDisplay"><br />Medium score color:</label>
-                    <input type="color" id="medColorDisplay" disabled>
-                    <label for="highColorDisplay"><br />High score color:</label>
-                    <input type="color" id="highColorDisplay" disabled>
-                    <div id="timeLimitNumDisplay"></div>
-                    <div id="enemiesQuantityDisplay"></div>
+                <div style="display: table-cell;" class="center">
+                    <div id="definitionDisplay">
+                        <em><strong><u>Definitions</u></strong></em>
+                        <div id="upKeyDisplay"></div>
+                        <div id="downKeyDisplay"></div>
+                        <div id="leftKeyDisplay"></div>
+                        <div id="rightKeyDisplay"></div>
+                        <div id="foodQuantityDisplay"></div>
+                        <label for="lowColorDisplay">Low score color:</label>
+                        <input type="color" id="lowColorDisplay" disabled>
+                        <label for="medColorDisplay"><br />Medium score color:</label>
+                        <input type="color" id="medColorDisplay" disabled>
+                        <label for="highColorDisplay"><br />High score color:</label>
+                        <input type="color" id="highColorDisplay" disabled>
+                        <div id="timeLimitNumDisplay"></div>
+                        <div id="enemiesQuantityDisplay"></div>
+                        <br />
+                    </div>
+                    <div id="restartDiv">
+                        <em id="restartText"><strong><u>Re-Start the game</u></strong></em>
+                        <em id="restartStrong" hidden><strong><u>Re-Start the game!!!</u></strong></em>
+                        <br />
+                        <input type="button" id="restartButton" name="restartButton" value="Play again">
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 
 
@@ -213,6 +224,9 @@
             }
         });
     </script>
-
+    <footer>
+        <p>sise bgu 2020 contact: <a href="mailto:shmera@post.bgu.ac.il">shmera@post.bgu.ac.il</a> <a href="mailto:yiftachs@post.bgu.ac.il">yiftachs@post.bgu.ac.il</a></p>
+    </footer>
 </body>
+
 </html>
