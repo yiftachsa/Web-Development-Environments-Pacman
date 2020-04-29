@@ -6,7 +6,7 @@ $(document).ready(function () {
 
 function start() {
     $("#signupButtom").click(function (e) { signupFunction(); });
-    $("#welcomeMenuButton").click(function (e) { signupFunction(); });
+    $("#signupMenuButton").click(function (e) { signupFunction(); });
 
     $("#loginByttom").click(function (e) { loginFunction(); });
     $("#loginMenuButton").click(function (e) { loginFunction(); });
@@ -41,8 +41,6 @@ function start() {
 
     $("#welcome").hide();
     $("#signup").show();
-
-
     }
 
 
