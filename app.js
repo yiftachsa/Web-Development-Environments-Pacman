@@ -32,6 +32,12 @@ var isMouthOpen = true;
 var npcMoveCycle = 0;
 
 var cellSize = 60;
+/*
+ * Media
+ */ 
+var avivBerryImage;
+var clockImage;
+var audioElement
 
 var isEaten;
 
@@ -65,15 +71,16 @@ var enemiesAmount = 2;
 
 
 $(document).ready(function () {
-    //context = canvas.getContext("2d");
-    //Start();
     startDefs();
+    loadImages();
+    loadMusic();
 });
 
 function startDefs() {
     $("#chooseKeysDiv>:button").click(function (e) { keySelection(this.id); });
     $("#randomButton").click(function (e) { randomizeDefs(); });
     $("#startButton").click(function (e) { startGame(); });
+
 }
 
 
@@ -92,10 +99,11 @@ function startGame() {
 
     //updating the user postion - also impacts player's speed
     moveInterval = setInterval(UpdatePosition, 140);
-
+    //start music
+    audioElement.play();
     //switchDevs
     $("#defsForm").hide();
-    $("#game").show();
+    $("#game").css("display", "table");
 }
 
 function initGameEnvironment() {
@@ -112,6 +120,18 @@ function initGameEnvironment() {
     highColor = $("#highScoreColor").val();
     timeLimit = $("#timeLimitNum").val();
     enemiesAmount = $("#enemiesQuantity").val();
+
+    //update definitions display
+    $("#upKeyDisplay").text("UP key: " + $("#upKeybutton").val());
+    $("#downKeyDisplay").text("DOWN key: " + $("#downKeybutton").val());
+    $("#leftKeyDisplay").text("LEFT key: " + $("#leftKeybutton").val());
+    $("#rightKeyDisplay").text("RIGHT key: " + $("#rightKeybutton").val());
+    $("#foodQuantityDisplay").text("Food Quantity: " + foodAmount );
+    $("#lowColorDisplay").prop("value", lowColor);
+    $("#medColorDisplay").prop("value", medColor);
+    $("#highColorDisplay").prop("value", highColor);
+    $("#timeLimitNumDisplay").text("Time Limit: " + timeLimit);
+    $("#enemiesQuantityDisplay").text("Enemies: " + enemiesAmount);
 }
 
 /*
@@ -167,10 +187,10 @@ function randomizeDefs() {
     $("#highScoreColor").prop("value", highColor);
     $("#timeLimitNum").prop("value", timeLimit);
     $("#enemiesQuantity").prop("value", enemiesAmount);
-    $("#upKeybutton").prop("value", ArrowUp);
-    $("#downKeybutton").prop("value", ArrowDown);
-    $("#leftKeybutton").prop("value", ArrowLeft);
-    $("#rightKeybutton").prop("value", ArrowRight);
+    $("#upKeybutton").prop("value", "ArrowUp");
+    $("#downKeybutton").prop("value", "ArrowDown");
+    $("#leftKeybutton").prop("value", "ArrowLeft");
+    $("#rightKeybutton").prop("value", "ArrowRight");
 
 }
 
@@ -349,7 +369,6 @@ function initNpcBoard() {
 
 }
 
-
 function initNpcWild() {
 
     if (wildPosition == undefined) {
@@ -428,11 +447,8 @@ function findRandomEmptyCell(board) {
     return [i, j];
 }
 
-
 function Draw() {
     canvas.width = canvas.width; //clean board
-    lblScore.value = score;
-    lblTime.value = time_elapsed;
     for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
             //position 
@@ -498,22 +514,10 @@ function Draw() {
         context.fill();
     }
     function drawBerry(center) {
-        context.beginPath();
-        context.arc(center.x + 10, center.y + 10, 7, 0, 2 * Math.PI);
-        context.arc(center.x + 5, center.y + 5, 7, 0, 2 * Math.PI);
-        context.arc(center.x, center.y, 7, 0, 2 * Math.PI);
-        context.arc(center.x - 10, center.y - 10, 7, 0, 2 * Math.PI);
-        context.arc(center.x - 5, center.y - 5, 7, 0, 2 * Math.PI);
-
-        context.fillStyle = "Red";
-        context.fill();
+        context.drawImage(avivBerryImage, center.x - cellSize / 3, center.y - cellSize / 3, cellSize - 15, cellSize - 15);
     }
     function drawClock(center) {
-        context.beginPath();
-        context.font = '10px serif';
-        context.fillText("clock", center.x, center.y);
-        context.fillStyle = "Black";
-        context.fill();
+        context.drawImage(clockImage, center.x - cellSize / 4, center.y - cellSize / 3, cellSize - 30, cellSize - 15);
     }
 
     function drawNPC(center, k) {
@@ -560,6 +564,17 @@ function Draw() {
         context.fillText(text, center.x - 15, center.y + 2);
         context.fill();
 
+    }
+}
+
+function updateDisplays() {
+    $("#scoreDiv").text("SCORE: " + score);
+    let timeLeft = timeLimit - time_elapsed;
+    $("#timeDiv").text("TIME LEFT: " + timeLeft);
+    $("#lifeDiv").empty();
+    $("#lifeDiv").append("LIVES: ");
+    for (let i = 0; i < lifesRemain; i++) {
+        $("#lifeDiv").append('<img src="./resources/life-img.jpg" height="16" width="16"/>');
     }
 }
 
@@ -610,8 +625,6 @@ function drawPacman(center) {
     context.fillStyle = "black"; //color
     context.fill();
 }
-
-
 
 function UpdatePosition() {
     //removing previous pacman location
@@ -683,18 +696,22 @@ function UpdatePosition() {
         pac_color = "lime";
     }
     if (foodRemain == 0) { //All food eaten
-        window.clearInterval(moveInterval);
+        gameOver();
         window.alert("Game completed");
     } else if (lifesRemain <= 0) {
+        gameOver();
         window.alert("Loser!");
     } else if (false) { //todo:TIME LIMIT
         if (score >= 100) {
+            gameOver();
             window.alert("Winner!");
         } else {
+            gameOver();
             window.alert("You are better than " + score + " points!");
         }
     } else {
         Draw();
+        updateDisplays();
     }
 
     function movePacman() {
@@ -726,8 +743,8 @@ function UpdatePosition() {
 
     function moveNPCs() {
         //todo
-        npcMoveCycle = (npcMoveCycle + 1) % 3 //MPCs move every 3 cycles
-        if (npcMoveCycle == 2) {
+        npcMoveCycle = (npcMoveCycle + 1) % 4 //MPCs move every 4 cycles
+        if (npcMoveCycle == 3) {
             //todo:move npcs
             let counter = 0;
             
@@ -775,7 +792,6 @@ function UpdatePosition() {
     }
 }
 
-
 function moveNPC(npcCount) {
     while (true) {
         moveType = getRandomInt(1, 4);
@@ -807,6 +823,16 @@ function moveNPC(npcCount) {
     }
 }
 
+function gameOver() {
+    window.clearInterval(moveInterval);
+    //stop music
+    audioElement.pause();
+    audioElement.currentTime = 0;
+    //TODO: display PLAY AGAIN button
+}
+
+
+
 /*
  * Returns a random integer between min(inclusive) and max(inclusive).
  * from: https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
@@ -827,4 +853,36 @@ function getRandomColor() {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+}
+
+
+/**
+ * loads all the images needed for the game.
+ * from: https://webplatform.github.io/docs/concepts/programming/drawing_images_onto_canvas/
+ * */ 
+function loadImages() {
+    // Create an image object. This is not attached to the DOM and is not part of the page.
+    let strawberryImage = new Image();
+    let hourglassImage = new Image();
+    // When the image has loaded, initialize the global var
+    strawberryImage.onload = function () {
+        avivBerryImage = strawberryImage;
+    }
+    hourglassImage.onload = function () {
+        clockImage = hourglassImage;
+    }
+    strawberryImage.src = "./resources/strawberry-small.jpg";
+    hourglassImage.src = "./resources/hourglass.jpg";
+}
+
+/**
+ * from: https://stackoverflow.com/questions/8489710/play-an-audio-file-using-jquery-when-a-button-is-clicked
+ * */
+function loadMusic() {
+    audioElement = document.createElement('audio');
+    audioElement.setAttribute('src', './resources/Theme.mp3');
+
+    audioElement.addEventListener('ended', function () {
+        this.play();
+    }, false);
 }
