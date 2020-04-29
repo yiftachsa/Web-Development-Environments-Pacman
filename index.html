@@ -17,8 +17,6 @@
 
 </head>
 
-
-
 <body>
     <div class="contents">
         <div id="menu" align="center">
@@ -31,11 +29,12 @@
             <br />
             <img src="pacCoro.jpg" class="center">
             <br />
-            <br />
-            <input type="button" id="signupButtom" name="signup" value="Signup">
-            <input type="button" id="loginByttom" name="login" value="Login">
+            <div class="center">
+                <input type="button" id="signupButtom" name="signup" value="Signup">
+                <input type="button" id="loginByttom" name="login" value="Login">
+            </div>
         </div>
-        <div id="signup" name="signup" style="display: none;">
+        <div id="signup" name="signup" style="display: none;" class="centerDiv">
             <p name="usernameP">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username"><br>
@@ -64,7 +63,7 @@
                 <input type="button" id="submit" name="submit" value="Submit">
             </p>
         </div>
-        <div id="login" style="display: none;">
+        <div id="login" style="display: none;" class="centerDiv">
             <p>
                 <label for="usernameConnect">Username</label>
                 <input type="text" id="usernameConnect" name="usernameConnect"><br>
@@ -95,7 +94,7 @@
             </div>
         </div>
 
-        <div id="defsForm" style="display: none;">
+        <div id="defsForm" style="display: none;" >
             <form id="form" autocomplete="off">
                 <fieldset>
                     <legend>Decide the intensity of your challenge</legend>
@@ -146,7 +145,7 @@
                 </fieldset>
             </form>
         </div>
-        <div id="game" hidden style="width: 80%; display: none;">
+        <div id="game" hidden style="display: none;">
             <div style="display: table-row;">
                 <div style="display: table-cell;">
                     <div id="gamesVarsDisplay">
@@ -161,20 +160,30 @@
 
                 </div>
 
-                <div id="definitionDisplay" style="display: table-cell;">
-                    <div id="upKeyDisplay"></div>
-                    <div id="downKeyDisplay"></div>
-                    <div id="leftKeyDisplay"></div>
-                    <div id="rightKeyDisplay"></div>
-                    <div id="foodQuantityDisplay"></div>
-                    <label for="lowColorDisplay">Low score color:</label>
-                    <input type="color" id="lowColorDisplay" disabled>
-                    <label for="medColorDisplay"><br />Medium score color:</label>
-                    <input type="color" id="medColorDisplay" disabled>
-                    <label for="highColorDisplay"><br />High score color:</label>
-                    <input type="color" id="highColorDisplay" disabled>
-                    <div id="timeLimitNumDisplay"></div>
-                    <div id="enemiesQuantityDisplay"></div>
+                <div style="display: table-cell;" class="center">
+                    <div id="definitionDisplay">
+                        <em><strong><u>Definitions</u></strong></em>
+                        <div id="upKeyDisplay"></div>
+                        <div id="downKeyDisplay"></div>
+                        <div id="leftKeyDisplay"></div>
+                        <div id="rightKeyDisplay"></div>
+                        <div id="foodQuantityDisplay"></div>
+                        <label for="lowColorDisplay">Low score color:</label>
+                        <input type="color" id="lowColorDisplay" disabled>
+                        <label for="medColorDisplay"><br />Medium score color:</label>
+                        <input type="color" id="medColorDisplay" disabled>
+                        <label for="highColorDisplay"><br />High score color:</label>
+                        <input type="color" id="highColorDisplay" disabled>
+                        <div id="timeLimitNumDisplay"></div>
+                        <div id="enemiesQuantityDisplay"></div>
+                        <br />
+                    </div>
+                    <div id="restartDiv">
+                        <em id="restartText"><strong><u>Re-Start the game</u></strong></em>
+                        <em id="restartStrong" hidden><strong><u>Re-Start the game!!!</u></strong></em>
+                        <br />
+                        <input type="button" id="restartButton" name="restartButton" value="Play again">
+                    </div>
                 </div>
             </div>
         </div>

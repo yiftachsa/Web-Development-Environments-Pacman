@@ -80,7 +80,8 @@ function startDefs() {
     $("#chooseKeysDiv>:button").click(function (e) { keySelection(this.id); });
     $("#randomButton").click(function (e) { randomizeDefs(); });
     $("#startButton").click(function (e) { startGame(); });
-
+    //restart button
+    $("#restartButton").click(function (e) { restartGame(); });
 }
 
 
@@ -132,6 +133,14 @@ function initGameEnvironment() {
     $("#highColorDisplay").prop("value", highColor);
     $("#timeLimitNumDisplay").text("Time Limit: " + timeLimit);
     $("#enemiesQuantityDisplay").text("Enemies: " + enemiesAmount);
+
+}
+
+function restartGame() {
+    gameOver();
+    $("#restartText").show();
+    $("#restartStrong").hide();
+    startGame();
 }
 
 /*
@@ -843,7 +852,6 @@ function moveNPC(npcCount) {
     }
 }
 
-
 function getMoveInt(npcCount , round) {
     let random = getRandomInt(0, 1);
     if (round > 0)
@@ -916,8 +924,6 @@ function getMoveInt(npcCount , round) {
 
 }
 
-
-
 function moveNPCSmart(npcCount) {
     let round = 0;
     while (true) {
@@ -949,8 +955,6 @@ function moveNPCSmart(npcCount) {
         round++;
     }
 }
-
-
 
 //todo : delete!!!
 function moveWild() {
@@ -990,6 +994,8 @@ function gameOver() {
     audioElement.pause();
     audioElement.currentTime = 0;
     //TODO: display PLAY AGAIN button
+    $("#restartText").hide();
+    $("#restartStrong").show();
 }
 
 
