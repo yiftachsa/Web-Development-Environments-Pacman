@@ -380,20 +380,15 @@ function initNpcBoard() {
 }
 
 function initNpcWild() {
-
-    if (wildPosition == undefined) {
-        //Wild npc
-        let emptyCell = findRandomEmptyCell(npcBoard);
-        /*while (pacmanBoard[emptyCell[0]][emptyCell[1]] == pacmanBoardCellType.PACMAN) {
-            emptyCell = findRandomEmptyCell(npcBoard);
-        }
-        */
-        wildPosition = new Object();
-        wildPosition.i = emptyCell[0]
-        wildPosition.j = emptyCell[1]
-    }
-
     let npcCell = [false, false, false, false, false];
+
+        wildPosition = new Object();
+        wildPosition.i = 0;
+        wildPosition.j = 0;
+        npcCell[0] = true;
+
+   
+
     npcCell[4] = true;
 
     npcBoard[wildPosition.i][wildPosition.j] = npcCell;
@@ -587,6 +582,8 @@ function updateEaten(wasEaten) {
 }
 
 function updateDisplays() {
+    $("#usernameDiv").empty();
+    $("#usernameDiv").append("Username:  " + "<Strong>"+$("#usernameConnect").val() +"</Strong>");
     $("#scoreDiv").text("SCORE: " + score);
     let timeLeft = timeLimit - time_elapsed;
     $("#timeDiv").text("TIME LEFT: " + timeLeft);
