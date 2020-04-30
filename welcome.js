@@ -11,6 +11,7 @@ function start() {
     $("#loginByttom").click(function (e) { loginFunction(); });
     $("#loginMenuButton").click(function (e) { loginFunction(); });
 
+
     $("#submit").click(function (e) { submitFunction(); });
     $("#connect").click(function (e) { connectFunction(); });
 
