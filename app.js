@@ -591,7 +591,7 @@ function updateDisplays() {
     $("#lifeDiv").empty();
     $("#lifeDiv").append("LIVES: ");
     for (let i = 0; i < lifesRemain; i++) {
-        $("#lifeDiv").append('<img src="./resources/life-img.jpg" height="16" width="16"/>');
+        $("#lifeDiv").append('<img src="./resources/life-img.png" height="16" width="16"/>');
     }
 }
 
@@ -658,7 +658,6 @@ function UpdatePosition() {
     if (npcBoard[pacmanPosition.i][pacmanPosition.j] != baseBoardCellType.BLANK) {
         //interaction with enemies
         if (doesContainsEnemy(npcBoard[pacmanPosition.i][pacmanPosition.j])) {
-            //    alert("remove 1 life");
             lifesRemain--;
             score = score - 10;
             enconteredEnemy = true;
@@ -1054,8 +1053,8 @@ function loadImages() {
     hourglassImage.onload = function () {
         clockImage = hourglassImage;
     }
-    strawberryImage.src = "./resources/strawberry-small.jpg";
-    hourglassImage.src = "./resources/hourglass.jpg";
+    strawberryImage.src = "./resources/strawberry-small.png";
+    hourglassImage.src = "./resources/hourglass.png";
 }
 
 /**
@@ -1063,7 +1062,7 @@ function loadImages() {
  * */
 function loadMusic() {
     audioElement = document.createElement('audio');
-    audioElement.setAttribute('src', './resources/Theme.mp3');
+    audioElement.setAttribute('src', './resources/Whistle Stop.mp3');
 
     audioElement.addEventListener('ended', function () {
         this.play();

@@ -19,18 +19,18 @@
 <body>
     <div class="contents">
         <div id="menu" align="center">
-            <input type="button" id="welcomeMenuButton" value="Welcome">
-            <input type="button" id="signupMenuButton" value="Signup">
-            <input type="button" id="loginMenuButton" value="Login">
-            <input type="button" id="aboutMenuButton" value=" About">
+            <button type="button" id="welcomeMenuButton" value="Welcome" class="button">Welcome</button>
+            <button type="button" id="signupMenuButton" value="Signup" class="button">Signup</button>
+            <button  type="button" id="loginMenuButton" value="Login" class="button">Login</button>
+            <button type="button" id="aboutMenuButton" value=" About" class="button">About</button>
         </div>
         <div id="welcome">
             <br />
             <img src="./resources/pacCoro.jpg" class="center">
             <br />
             <div class="center">
-                <input type="button" id="signupButtom" name="signup" value="Signup">
-                <input type="button" id="loginByttom" name="login" value="Login">
+                <button type="button" id="signupButtom" name="signup" value="Signup" class="button">Signup</button>
+                <button type ="button" id="loginByttom" name="login" value="Login" class="button">Login</button>
             </div>
         </div>
         <div id="signup" name="signup" style="display: none;" class="centerDiv">
@@ -59,7 +59,7 @@
                 <input type="date" id="birthday" name="birthday">
             </p>
             <p>
-                <input type="button" id="submit" name="submit" value="Submit">
+                <button type="button" id="submit" name="submit" value="Submit" class="button">Submit</button>
             </p>
         </div>
         <div id="login" style="display: none;" class="centerDiv">
@@ -72,7 +72,7 @@
                 <input type="password" id="passwordConnect" name="passwordConnect"><br>
             </p>
             <p>
-                <input type="button" id="connect" name="connect" value="Connect">
+                <button type="button" id="connect" name="connect" value="Connect" class="button">Connect</button>
             </p>
         </div>
 
@@ -139,8 +139,10 @@
                         <input type="number" id="enemiesQuantity" name="enemiesQuantity" value="2" min="1" max="4">
                     </p>
                     <p>
-                        <input type="button" id="randomButton" name="randomButton" value="random">
-                        <input type="button" id="startButton" name="startButton" value="Let's GO!!!">
+
+                       
+                        <button type="button" id="randomButton" name="randomButton" value="random" class="button">random</button>
+                        <button type="button" id="startButton" name="startButton" value="Let's GO!!!" class="button">Let's GO!!!</button>
                     </p>
                 </fieldset>
             </form>
@@ -188,7 +190,7 @@
                         <em id="restartText"><strong><u>Re-Start the game</u></strong></em>
                         <em id="restartStrong" hidden><strong><u>Re-Start the game!!!</u></strong></em>
                         <br />
-                        <input type="button" id="restartButton" name="restartButton" value="Play again">
+                        <button type="button" id="restartButton" name="restartButton" value="Play again" class="button">Play again</button>
                     </div>
                 </div>
             </div>
