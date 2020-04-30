@@ -165,6 +165,9 @@ function connectFunction() {
         return false;
     }
     //switchDevs
+    let usernameD = $("#usernameConnect").val();
+    $("#usernameDefs").empty();
+    $("#usernameDefs").append("Username:  " + "<Strong>" + usernameD + "</Strong>");
     $("#login").hide();
     $("#defsForm").show();
 

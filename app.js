@@ -78,6 +78,7 @@ $(document).ready(function () {
 });
 
 function startDefs() {
+
     $("#chooseKeysDiv>:button").click(function (e) { keySelection(this.id); });
     $("#randomButton").click(function (e) { randomizeDefs(); });
     $("#startButton").click(function (e) { startGame(); });
