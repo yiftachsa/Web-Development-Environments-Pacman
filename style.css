@@ -104,8 +104,10 @@ p {
     text-justify: inter-word;
 }
 
+
 .contents {
-    background: white;
+    background: rgba(221, 221, 221, 0.4588235294117647);
+    /*background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(0,246,255,1) 24%, rgba(0,31,255,1) 50%, rgba(0,246,255,1) 90%,rgba(0,31,255,1) 100%);*/
     width: 75%;
     padding: 40px;
     margin: 100px auto;
@@ -133,3 +135,24 @@ p {
 #restartStrong {
     font-size: 25px;
 }
+
+/*buttom*/
+input[type=button] {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 14px;
+    box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+    background: #fff;
+    border-radius: 4px;
+    transition: all .3s ease;
+}
+
+    input[type=button]:hover {
+        color: #5778F3;
+        transform: translateY(-1px);
+        box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+    }
+
+
+
