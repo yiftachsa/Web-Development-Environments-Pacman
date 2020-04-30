@@ -30,7 +30,7 @@ function welcomeFunction() {
     $("#game").hide();
 
     $("#welcome").show();
-    stopGame();
+    gameOver();
 }
 
 function signupFunction() {
@@ -42,7 +42,7 @@ function signupFunction() {
 
     $("#welcome").hide();
     $("#signup").show();
-    stopGame();
+    gameOver();
 }
 
 
@@ -57,7 +57,7 @@ function loginFunction() {
     $("#signup").hide();
 
     $("#login").show();
-    stopGame();
+    gameOver();
 }
 
 function submitFunction() {
@@ -165,9 +165,6 @@ function connectFunction() {
         return false;
     }
     //switchDevs
-    let usernameD = $("#usernameConnect").val();
-    $("#usernameDefs").empty();
-    $("#usernameDefs").append("Username:  " + "<Strong>" + usernameD + "</Strong>");
     $("#login").hide();
     $("#defsForm").show();
 

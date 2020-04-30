@@ -30,7 +30,6 @@ var moveInterval;
 
 var isMouthOpen = true;
 var npcMoveCycle = 0;
-var eatenCycle = 0;
 
 var cellSize = 60;
 /*
@@ -78,7 +77,6 @@ $(document).ready(function () {
 });
 
 function startDefs() {
-
     $("#chooseKeysDiv>:button").click(function (e) { keySelection(this.id); });
     $("#randomButton").click(function (e) { randomizeDefs(); });
     $("#startButton").click(function (e) { startGame(); });
@@ -381,15 +379,20 @@ function initNpcBoard() {
 }
 
 function initNpcWild() {
-    let npcCell = [false, false, false, false, false];
 
+    if (wildPosition == undefined) {
+        //Wild npc
+        let emptyCell = findRandomEmptyCell(npcBoard);
+        /*while (pacmanBoard[emptyCell[0]][emptyCell[1]] == pacmanBoardCellType.PACMAN) {
+            emptyCell = findRandomEmptyCell(npcBoard);
+        }
+        */
         wildPosition = new Object();
-        wildPosition.i = 0;
-        wildPosition.j = 0;
-        npcCell[0] = true;
+        wildPosition.i = emptyCell[0]
+        wildPosition.j = emptyCell[1]
+    }
 
-   
-
+    let npcCell = [false, false, false, false, false];
     npcCell[4] = true;
 
     npcBoard[wildPosition.i][wildPosition.j] = npcCell;
@@ -573,18 +576,7 @@ function Draw() {
     }
 }
 
-function updateEaten(wasEaten) {
-    eatenCycle = (eatenCycle + 1) % 14;
-    if (wasEaten && ($("#eatenDiv").is(':empty'))) {
-        $("#eatenDiv").append("<Strong>You got eaten!!!</Strong>");
-    } else if (eatenCycle == 13) {
-        $("#eatenDiv").empty();
-    }
-}
-
 function updateDisplays() {
-    $("#usernameDiv").empty();
-    $("#usernameDiv").append("Username:  " + "<Strong>"+$("#usernameConnect").val() +"</Strong>");
     $("#scoreDiv").text("SCORE: " + score);
     let timeLeft = timeLimit - time_elapsed;
     $("#timeDiv").text("TIME LEFT: " + timeLeft);
@@ -670,6 +662,7 @@ function UpdatePosition() {
             pacmanPosition.i = pacmanCell[0];
             pacmanPosition.j = pacmanCell[1];
             pacmanBoard[pacmanPosition.i][pacmanPosition.j] = baseBoardCellType.PACMAN;
+
         }
     }
     if (!enconteredEnemy) {
@@ -693,9 +686,10 @@ function UpdatePosition() {
             foodRemain--;
         } else if (pacmanBoard[pacmanPosition.i][pacmanPosition.j] == pacmanBoardCellType.AVIVBERRY) {
             lifesRemain++;
+            // alert("added a life");
         } else if (pacmanBoard[pacmanPosition.i][pacmanPosition.j] == pacmanBoardCellType.CLOCK) {
-            let timeBonus = timeLimit * 0.25;
-            timeLimit = parseInt(timeLimit) + parseInt(timeBonus);
+            timeLimit = timeLimit + 60;
+            //  alert("increased time limit");
         }
 
         //actually move pacman
@@ -704,15 +698,18 @@ function UpdatePosition() {
     //updating time
     var currentTime = new Date();
     time_elapsed = (currentTime - start_time) / 1000;
-    let timeLeft = timeLimit - time_elapsed;
+
     //Game logic
+    if (score >= 20 && time_elapsed <= 10) {
+        pac_color = "lime";
+    }
     if (foodRemain == 0) { //All food eaten
         gameOver();
         window.alert("Game completed");
     } else if (lifesRemain <= 0) {
         gameOver();
         window.alert("Loser!");
-    } else if (timeLeft <= 0) { //todo:TIME LIMIT
+    } else if (false) { //todo:TIME LIMIT
         if (score >= 100) {
             gameOver();
             window.alert("Winner!");
@@ -722,7 +719,6 @@ function UpdatePosition() {
         }
     } else {
         Draw();
-        updateEaten(enconteredEnemy);
         updateDisplays();
     }
 
@@ -824,8 +820,6 @@ function UpdatePosition() {
         }
     }
 }
-
-
 
 function moveNPC(npcCount) {
     while (true) {
@@ -999,19 +993,9 @@ function gameOver() {
     //stop music
     audioElement.pause();
     audioElement.currentTime = 0;
-    
+    //TODO: display PLAY AGAIN button
     $("#restartText").hide();
     $("#restartStrong").show();
-}
-
-function stopGame() {
-    window.clearInterval(moveInterval);
-    //stop music
-    audioElement.pause();
-    audioElement.currentTime = 0;
-    $("#restartText").show();
-    $("#restartStrong").hide();
-
 }
 
 

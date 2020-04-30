@@ -4,9 +4,10 @@
     <script src="./jquery-3.4.1.slim.min.js"></script>
     <script type="text/javascript" src="./app.js"></script>
     <script type="text/javascript" src="./welcome.js"></script>
+    <script src="./jquery-validation-1.19.1/dist/jquery.validate.js"></script>
     <style type="text/css">
         body {
-            background-image: url(./resources/pacmanImage.jpg);
+            background-image: url(pacmanImage.jpg);
             background-size: cover;
             background-attachment: fixed;
         }
@@ -26,7 +27,7 @@
         </div>
         <div id="welcome">
             <br />
-            <img src="./resources/pacCoro.jpg" class="center">
+            <img src="pacCoro.jpg" class="center">
             <br />
             <div class="center">
                 <input type="button" id="signupButtom" name="signup" value="Signup">
@@ -43,7 +44,7 @@
                 <input type="password" id="password" name="password"><br>
             </p>
             <p name="passwordConfirmP">
-                <label for="passwordConfirm">Confirm-Password</label>
+                <label for="passwordConfirm">Confirm password</label>
                 <input type="password" id="passwordConfirm" name="passwordConfirm"><br>
             </p>
             <p name="fullNameP">
@@ -93,8 +94,7 @@
             </div>
         </div>
 
-        <div id="defsForm" style="display: none;">
-            <div id="usernameDefs" style="display: inline-block;"></div>
+        <div id="defsForm" style="display: none;" >
             <form id="form" autocomplete="off">
                 <fieldset>
                     <legend>Decide the intensity of your challenge</legend>
@@ -149,15 +149,9 @@
             <div style="display: table-row;">
                 <div style="display: table-cell;">
                     <div id="gamesVarsDisplay">
-                        <div id="usernameDiv" style="display: inline-block;">
-
-                        </div>
-                        <br />
                         <div id="scoreDiv" style="display: inline-block;">
                         </div>
                         <div id="lifeDiv" style="display: inline-block;">
-                        </div>
-                        <div id="eatenDiv" style="display: inline-block;">
                         </div>
                         <div id="timeDiv" style="display: inline-block;">
                         </div>
@@ -193,7 +187,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
 
@@ -229,9 +222,6 @@
             }
         });
     </script>
-    <footer>
-        <p>sise bgu 2020 contact: <a href="mailto:shmera@post.bgu.ac.il">shmera@post.bgu.ac.il</a> <a href="mailto:yiftachs@post.bgu.ac.il">yiftachs@post.bgu.ac.il</a></p>
-    </footer>
-</body>
 
+</body>
 </html>
