@@ -3,7 +3,6 @@ $(document).ready(function () {
 });
 
 
-
 function start() {
     $("#signupButtom").click(function (e) { signupFunction(); });
     $("#signupMenuButton").click(function (e) { signupFunction(); });
@@ -116,8 +115,10 @@ function submitFunction() {
 
     createUser(username, password);
 
+    $("#signup :input").prop("value", '');
+   
     //switchDevs
-    $("#signIn").hide();
+    $("#signup").hide();
     $("#welcome").show();
 
 }

@@ -38,7 +38,9 @@ var cellSize = 60;
  */
 var avivBerryImage;
 var clockImage;
-var audioElement
+var wallBrickImage;
+var audioElement;
+
 
 var isEaten;
 
@@ -297,21 +299,78 @@ function initBoards() {
     }
 
     function initBaseBoard() {
+
+        let numberOfWalls = getRandomInt(4, 7);
+        let wallPositions = new Array(numberOfWalls);
+        let counter = 0;
+        while (counter < numberOfWalls)
+        {
+            let wallLength = getRandomInt(2, 3);
+            wallPositions[counter] = new Object();
+
+            wallPositions[counter].x = getRandomInt(1, 8);
+            wallPositions[counter].y = getRandomInt(1, 8);
+            let isVertical = getRandomInt(0, 1);
+            if (isVertical == 1)
+            {
+                for (let k = 0; k < wallLength; k++) {
+                    wallPositions[counter + k + 1] = new Object;
+                    wallPositions[counter + k + 1].x = wallPositions[counter + k].x;
+                    if (wallPositions[counter + k].y > 1) {
+                        wallPositions[counter + k + 1].y = wallPositions[counter + k].y - 1;
+                    }
+                    else {
+                        wallPositions[counter + k + 1].y = wallPositions[counter + k].y + 1;
+                    }
+                }
+            }
+            else
+            {
+                for (let k = 0; k < wallLength; k++) {
+                    wallPositions[counter + k + 1] = new Object;
+                    wallPositions[counter + k + 1].y = wallPositions[counter + k].y;
+                    if (wallPositions[counter + k].x > 1) {
+                        wallPositions[counter + k + 1].x = wallPositions[counter + k].x - 1;
+                    }
+                    else {
+                        wallPositions[counter + k + 1].x = wallPositions[counter + k].x + 1;
+                    }
+                }
+            }
+            counter = counter + wallLength;
+        }
+    
         baseBoard = new Array(); //new game board
         for (let i = 0; i < 10; i++) {
             baseBoard[i] = new Array();
             //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2) - MAX WALLS QUANTITY= 8
             for (let j = 0; j < 10; j++) {
-                if ((i == 3 && j == 3) ||
+               /* if ((i == 3 && j == 3) ||
                     (i == 3 && j == 4) ||
                     (i == 3 && j == 5) ||
                     (i == 6 && j == 1) ||
                     (i == 6 && j == 2)) {
                     baseBoard[i][j] = baseBoardCellType.WALL; //Wall=4
                 }
+                */
+                let isWall = false;
+                for( let n = 0; n < numberOfWalls ; n++)
+                {
+                    if (wallPositions[n].x == i && wallPositions[n].y == j) {
+                        isWall = true;
+                        break;
+                    }
+                }
+
+                if(isWall)
+                {
+                    baseBoard[i][j] = baseBoardCellType.WALL;
+                }
                 else {
                     baseBoard[i][j] = baseBoardCellType.BLANK;
                 }
+
+
             }
         }
     }
@@ -396,53 +455,6 @@ function initNpcWild() {
 
 }
 
-/*
-function startBoard() {
-    board = new Array(); //new game board
-    score = 0;
-    pac_color = "yellow";
-    var cnt = 100;
-    var food_remain = foodAmount;
-    var pacman_remain = 1;
-    start_time = new Date();
-    for (var i = 0; i < 10; i++) {
-        board[i] = new Array();
-        //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-        for (var j = 0; j < 10; j++) {
-            if ((i == 3 && j == 3) ||
-                (i == 3 && j == 4) ||
-                (i == 3 && j == 5) ||
-                (i == 6 && j == 1) ||
-                (i == 6 && j == 2)) {
-                board[i][j] = baseBoardCellType.WALL; //Wall=4
-            }
-            else {
-                var randomNum = Math.random();
-                if (randomNum <= (1.0 * food_remain) / cnt) {
-                    food_remain--;
-                    board[i][j] = baseBoardCellType.FOOD; //food = 1
-                }
-                else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
-                    pacmanPosition.i = i;
-                    pacmanPosition.j = j;
-                    pacman_remain--;
-                    board[i][j] = baseBoardCellType.PACMAN; //pacman = 2
-                }
-                else {
-                    board[i][j] = baseBoardCellType.BLANK; //blank = 0
-                }
-                cnt--;
-            }
-        }
-    }
-    while (food_remain > 0) {
-        var emptyCell = findRandomEmptyCell(board);
-        board[emptyCell[0]][emptyCell[1]] = baseBoardCellType.FOOD; //food = 1
-        food_remain--;
-    }
-}
-*/
-
 function findRandomEmptyCell(board) {
     var i = Math.floor(Math.random() * 9 + 1);
     var j = Math.floor(Math.random() * 9 + 1);
@@ -475,10 +487,7 @@ function Draw() {
             } else if (pacmanBoard[i][j] == pacmanBoardCellType.CLOCK) {
                 drawClock(center);
             } else if (pacmanBoard[i][j] == baseBoardCellType.WALL) {
-                context.beginPath();
-                context.rect(center.x - 30, center.y - 30, cellSize, cellSize);
-                context.fillStyle = "grey"; //color
-                context.fill();
+                drawWall(center);
             }
 
             //SECOND layer - npcBoard
@@ -491,6 +500,10 @@ function Draw() {
                 }
             }
         }
+    }
+    function drawWall(center)
+    {
+        context.drawImage(wallBrickImage, center.x - cellSize / 2, center.y - cellSize / 2, cellSize, cellSize);
     }
 
     function drawFood(center, foodType) {
@@ -805,10 +818,6 @@ function UpdatePosition() {
                 counter++;
 
             }
-
-
-
-
         }
     }
 
@@ -961,7 +970,6 @@ function moveNPCSmart(npcCount) {
     }
 }
 
-//todo : delete!!!
 function moveWild() {
     while (true) {
         moveType = getRandomInt(1, 4);
@@ -1046,6 +1054,7 @@ function loadImages() {
     // Create an image object. This is not attached to the DOM and is not part of the page.
     let strawberryImage = new Image();
     let hourglassImage = new Image();
+    let wallImage = new Image();
     // When the image has loaded, initialize the global var
     strawberryImage.onload = function () {
         avivBerryImage = strawberryImage;
@@ -1053,8 +1062,13 @@ function loadImages() {
     hourglassImage.onload = function () {
         clockImage = hourglassImage;
     }
+    wallImage.onload = function () {
+        wallBrickImage = wallImage;
+    }
     strawberryImage.src = "./resources/strawberry-small.png";
     hourglassImage.src = "./resources/hourglass.png";
+    wallImage.src = "./resources/wall.jpg";
+
 }
 
 /**
