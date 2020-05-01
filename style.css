@@ -138,21 +138,54 @@ p {
 
 /*buttom*/
 input[type=button] {
+    -moz-box-shadow: inset 0px 1px 0px 0px #ffffff;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #ffffff;
+    box-shadow: inset 0px 1px 0px 0px #ffffff;
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f5f5f4), color-stop(1, #dededd) );
+    background: -moz-linear-gradient( center top, #f5f5f4 5%, #dededd 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f4', endColorstr='#dededd');
+    border: 1px solid #cdcdc6;
+    background-color: #dbdbdb;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
     display: inline-block;
-    height: 40px;
-    line-height: 40px;
-    padding: 0 14px;
-    box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
-    background: #fff;
-    border-radius: 4px;
-    transition: all .3s ease;
+    color: #636360 !important;
+    font-size: 15px;
+    font-family: Calibri;
+    font-weight: normal;
+    padding: 6px 24px;
+    text-decoration: none;
 }
+
 
     input[type=button]:hover {
         color: #5778F3;
         transform: translateY(-1px);
         box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
     }
+
+
+.button {
+    padding: 10px 20px;
+    border-radius: 61px;
+    box-shadow: inset 0 0 0 2px #474E51;
+    transition: 300ms box-shadow cubic-bezier(0.4, 0, 0.6, 1), 300ms background-color cubic-bezier(0.4, 0, 0.6, 1), 300ms color cubic-bezier(0.4, 0, 0.6, 1);  ;
+    color: #474E51;
+    font-family: Calibri;
+}
+
+    .button:hover {
+        box-shadow: inset 0 0 0 4px #5778F3;
+        color: #5778F3;
+    }
+
+
+img {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 2px;
+}
 
 
 
