@@ -30,6 +30,7 @@ var moveInterval;
 
 var isMouthOpen = true;
 var npcMoveCycle = 0;
+var eatenCycle = 0;
 
 var cellSize = 60;
 /*
@@ -37,7 +38,9 @@ var cellSize = 60;
  */
 var avivBerryImage;
 var clockImage;
-var audioElement
+var wallBrickImage;
+var audioElement;
+
 
 var isEaten;
 
@@ -77,10 +80,12 @@ $(document).ready(function () {
 });
 
 function startDefs() {
+
     $("#chooseKeysDiv>:button").click(function (e) { keySelection(this.id); });
     $("#randomButton").click(function (e) { randomizeDefs(); });
     $("#startButton").click(function (e) { startGame(); });
-
+    //restart button
+    $("#restartButton").click(function (e) { restartGame(); });
 }
 
 
@@ -132,6 +137,14 @@ function initGameEnvironment() {
     $("#highColorDisplay").prop("value", highColor);
     $("#timeLimitNumDisplay").text("Time Limit: " + timeLimit);
     $("#enemiesQuantityDisplay").text("Enemies: " + enemiesAmount);
+
+}
+
+function restartGame() {
+    gameOver();
+    $("#restartText").show();
+    $("#restartStrong").hide();
+    startGame();
 }
 
 /*
@@ -286,21 +299,78 @@ function initBoards() {
     }
 
     function initBaseBoard() {
+
+        let numberOfWalls = getRandomInt(4, 7);
+        let wallPositions = new Array(numberOfWalls);
+        let counter = 0;
+        while (counter < numberOfWalls)
+        {
+            let wallLength = getRandomInt(2, 3);
+            wallPositions[counter] = new Object();
+
+            wallPositions[counter].x = getRandomInt(1, 8);
+            wallPositions[counter].y = getRandomInt(1, 8);
+            let isVertical = getRandomInt(0, 1);
+            if (isVertical == 1)
+            {
+                for (let k = 0; k < wallLength; k++) {
+                    wallPositions[counter + k + 1] = new Object;
+                    wallPositions[counter + k + 1].x = wallPositions[counter + k].x;
+                    if (wallPositions[counter + k].y > 1) {
+                        wallPositions[counter + k + 1].y = wallPositions[counter + k].y - 1;
+                    }
+                    else {
+                        wallPositions[counter + k + 1].y = wallPositions[counter + k].y + 1;
+                    }
+                }
+            }
+            else
+            {
+                for (let k = 0; k < wallLength; k++) {
+                    wallPositions[counter + k + 1] = new Object;
+                    wallPositions[counter + k + 1].y = wallPositions[counter + k].y;
+                    if (wallPositions[counter + k].x > 1) {
+                        wallPositions[counter + k + 1].x = wallPositions[counter + k].x - 1;
+                    }
+                    else {
+                        wallPositions[counter + k + 1].x = wallPositions[counter + k].x + 1;
+                    }
+                }
+            }
+            counter = counter + wallLength;
+        }
+    
         baseBoard = new Array(); //new game board
         for (let i = 0; i < 10; i++) {
             baseBoard[i] = new Array();
             //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2) - MAX WALLS QUANTITY= 8
             for (let j = 0; j < 10; j++) {
-                if ((i == 3 && j == 3) ||
+               /* if ((i == 3 && j == 3) ||
                     (i == 3 && j == 4) ||
                     (i == 3 && j == 5) ||
                     (i == 6 && j == 1) ||
                     (i == 6 && j == 2)) {
                     baseBoard[i][j] = baseBoardCellType.WALL; //Wall=4
                 }
+                */
+                let isWall = false;
+                for( let n = 0; n < numberOfWalls ; n++)
+                {
+                    if (wallPositions[n].x == i && wallPositions[n].y == j) {
+                        isWall = true;
+                        break;
+                    }
+                }
+
+                if(isWall)
+                {
+                    baseBoard[i][j] = baseBoardCellType.WALL;
+                }
                 else {
                     baseBoard[i][j] = baseBoardCellType.BLANK;
                 }
+
+
             }
         }
     }
@@ -370,72 +440,20 @@ function initNpcBoard() {
 }
 
 function initNpcWild() {
-
-    if (wildPosition == undefined) {
-        //Wild npc
-        let emptyCell = findRandomEmptyCell(npcBoard);
-        /*while (pacmanBoard[emptyCell[0]][emptyCell[1]] == pacmanBoardCellType.PACMAN) {
-            emptyCell = findRandomEmptyCell(npcBoard);
-        }
-        */
-        wildPosition = new Object();
-        wildPosition.i = emptyCell[0]
-        wildPosition.j = emptyCell[1]
-    }
-
     let npcCell = [false, false, false, false, false];
+
+        wildPosition = new Object();
+        wildPosition.i = 0;
+        wildPosition.j = 0;
+        npcCell[0] = true;
+
+   
+
     npcCell[4] = true;
 
     npcBoard[wildPosition.i][wildPosition.j] = npcCell;
 
 }
-
-/*
-function startBoard() {
-    board = new Array(); //new game board
-    score = 0;
-    pac_color = "yellow";
-    var cnt = 100;
-    var food_remain = foodAmount;
-    var pacman_remain = 1;
-    start_time = new Date();
-    for (var i = 0; i < 10; i++) {
-        board[i] = new Array();
-        //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-        for (var j = 0; j < 10; j++) {
-            if ((i == 3 && j == 3) ||
-                (i == 3 && j == 4) ||
-                (i == 3 && j == 5) ||
-                (i == 6 && j == 1) ||
-                (i == 6 && j == 2)) {
-                board[i][j] = baseBoardCellType.WALL; //Wall=4
-            }
-            else {
-                var randomNum = Math.random();
-                if (randomNum <= (1.0 * food_remain) / cnt) {
-                    food_remain--;
-                    board[i][j] = baseBoardCellType.FOOD; //food = 1
-                }
-                else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
-                    pacmanPosition.i = i;
-                    pacmanPosition.j = j;
-                    pacman_remain--;
-                    board[i][j] = baseBoardCellType.PACMAN; //pacman = 2
-                }
-                else {
-                    board[i][j] = baseBoardCellType.BLANK; //blank = 0
-                }
-                cnt--;
-            }
-        }
-    }
-    while (food_remain > 0) {
-        var emptyCell = findRandomEmptyCell(board);
-        board[emptyCell[0]][emptyCell[1]] = baseBoardCellType.FOOD; //food = 1
-        food_remain--;
-    }
-}
-*/
 
 function findRandomEmptyCell(board) {
     var i = Math.floor(Math.random() * 9 + 1);
@@ -469,11 +487,9 @@ function Draw() {
             } else if (pacmanBoard[i][j] == pacmanBoardCellType.CLOCK) {
                 drawClock(center);
             } else if (pacmanBoard[i][j] == baseBoardCellType.WALL) {
-                context.beginPath();
-                context.rect(center.x - 30, center.y - 30, cellSize, cellSize);
-                context.fillStyle = "grey"; //color
-                context.fill();
+                drawWall(center);
             }
+
 
             //SECOND layer - npcBoard
             if (npcBoard[i][j] != baseBoardCellType.BLANK && baseBoard[i][j] != baseBoardCellType.WALL) {
@@ -485,6 +501,10 @@ function Draw() {
                 }
             }
         }
+    }
+    function drawWall(center)
+    {
+        context.drawImage(wallBrickImage, center.x - cellSize / 2, center.y - cellSize / 2, cellSize, cellSize);
     }
 
     function drawFood(center, foodType) {
@@ -567,14 +587,25 @@ function Draw() {
     }
 }
 
+function updateEaten(wasEaten) {
+    eatenCycle = (eatenCycle + 1) % 14;
+    if (wasEaten && ($("#eatenDiv").is(':empty'))) {
+        $("#eatenDiv").append("<Strong>You got eaten!!!</Strong>");
+    } else if (eatenCycle == 13) {
+        $("#eatenDiv").empty();
+    }
+}
+
 function updateDisplays() {
+    $("#usernameDiv").empty();
+    $("#usernameDiv").append("Username:  " + "<Strong>"+$("#usernameConnect").val() +"</Strong>");
     $("#scoreDiv").text("SCORE: " + score);
     let timeLeft = timeLimit - time_elapsed;
     $("#timeDiv").text("TIME LEFT: " + timeLeft);
     $("#lifeDiv").empty();
     $("#lifeDiv").append("LIVES: ");
     for (let i = 0; i < lifesRemain; i++) {
-        $("#lifeDiv").append('<img src="./resources/life-img.jpg" height="16" width="16"/>');
+        $("#lifeDiv").append('<img src="./resources/life-img.png" height="16" width="16"/>');
     }
 }
 
@@ -641,7 +672,6 @@ function UpdatePosition() {
     if (npcBoard[pacmanPosition.i][pacmanPosition.j] != baseBoardCellType.BLANK) {
         //interaction with enemies
         if (doesContainsEnemy(npcBoard[pacmanPosition.i][pacmanPosition.j])) {
-            //    alert("remove 1 life");
             lifesRemain--;
             score = score - 10;
             enconteredEnemy = true;
@@ -653,7 +683,6 @@ function UpdatePosition() {
             pacmanPosition.i = pacmanCell[0];
             pacmanPosition.j = pacmanCell[1];
             pacmanBoard[pacmanPosition.i][pacmanPosition.j] = baseBoardCellType.PACMAN;
-
         }
     }
     if (!enconteredEnemy) {
@@ -677,10 +706,9 @@ function UpdatePosition() {
             foodRemain--;
         } else if (pacmanBoard[pacmanPosition.i][pacmanPosition.j] == pacmanBoardCellType.AVIVBERRY) {
             lifesRemain++;
-            // alert("added a life");
         } else if (pacmanBoard[pacmanPosition.i][pacmanPosition.j] == pacmanBoardCellType.CLOCK) {
-            timeLimit = timeLimit + 60;
-            //  alert("increased time limit");
+            let timeBonus = timeLimit * 0.25;
+            timeLimit = parseInt(timeLimit) + parseInt(timeBonus);
         }
 
         //actually move pacman
@@ -689,18 +717,15 @@ function UpdatePosition() {
     //updating time
     var currentTime = new Date();
     time_elapsed = (currentTime - start_time) / 1000;
-
+    let timeLeft = timeLimit - time_elapsed;
     //Game logic
-    if (score >= 20 && time_elapsed <= 10) {
-        pac_color = "lime";
-    }
     if (foodRemain == 0) { //All food eaten
         gameOver();
         window.alert("Game completed");
     } else if (lifesRemain <= 0) {
         gameOver();
         window.alert("Loser!");
-    } else if (false) { //todo:TIME LIMIT
+    } else if (timeLeft <= 0) { //todo:TIME LIMIT
         if (score >= 100) {
             gameOver();
             window.alert("Winner!");
@@ -710,6 +735,7 @@ function UpdatePosition() {
         }
     } else {
         Draw();
+        updateEaten(enconteredEnemy);
         updateDisplays();
     }
 
@@ -793,10 +819,6 @@ function UpdatePosition() {
                 counter++;
 
             }
-
-
-
-
         }
     }
 
@@ -811,6 +833,8 @@ function UpdatePosition() {
         }
     }
 }
+
+
 
 function moveNPC(npcCount) {
     while (true) {
@@ -842,7 +866,6 @@ function moveNPC(npcCount) {
 
     }
 }
-
 
 function getMoveInt(npcCount , round) {
     let random = getRandomInt(0, 1);
@@ -916,8 +939,6 @@ function getMoveInt(npcCount , round) {
 
 }
 
-
-
 function moveNPCSmart(npcCount) {
     let round = 0;
     while (true) {
@@ -950,9 +971,6 @@ function moveNPCSmart(npcCount) {
     }
 }
 
-
-
-//todo : delete!!!
 function moveWild() {
     while (true) {
         moveType = getRandomInt(1, 4);
@@ -989,7 +1007,19 @@ function gameOver() {
     //stop music
     audioElement.pause();
     audioElement.currentTime = 0;
-    //TODO: display PLAY AGAIN button
+    
+    $("#restartText").hide();
+    $("#restartStrong").show();
+}
+
+function stopGame() {
+    window.clearInterval(moveInterval);
+    //stop music
+    audioElement.pause();
+    audioElement.currentTime = 0;
+    $("#restartText").show();
+    $("#restartStrong").hide();
+
 }
 
 
@@ -1025,6 +1055,7 @@ function loadImages() {
     // Create an image object. This is not attached to the DOM and is not part of the page.
     let strawberryImage = new Image();
     let hourglassImage = new Image();
+    let wallImage = new Image();
     // When the image has loaded, initialize the global var
     strawberryImage.onload = function () {
         avivBerryImage = strawberryImage;
@@ -1032,8 +1063,13 @@ function loadImages() {
     hourglassImage.onload = function () {
         clockImage = hourglassImage;
     }
-    strawberryImage.src = "./resources/strawberry-small.jpg";
-    hourglassImage.src = "./resources/hourglass.jpg";
+    wallImage.onload = function () {
+        wallBrickImage = wallImage;
+    }
+    strawberryImage.src = "./resources/strawberry-small.png";
+    hourglassImage.src = "./resources/hourglass.png";
+    wallImage.src = "./resources/wall.jpg";
+
 }
 
 /**
@@ -1041,7 +1077,7 @@ function loadImages() {
  * */
 function loadMusic() {
     audioElement = document.createElement('audio');
-    audioElement.setAttribute('src', './resources/Theme.mp3');
+    audioElement.setAttribute('src', './resources/Whistle Stop.mp3');
 
     audioElement.addEventListener('ended', function () {
         this.play();

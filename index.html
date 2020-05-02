@@ -4,10 +4,9 @@
     <script src="./jquery-3.4.1.slim.min.js"></script>
     <script type="text/javascript" src="./app.js"></script>
     <script type="text/javascript" src="./welcome.js"></script>
-    <script src="./jquery-validation-1.19.1/dist/jquery.validate.js"></script>
     <style type="text/css">
         body {
-            background-image: url(pacmanImage.jpg);
+            background-image: url(./resources/pacmanImage.jpg);
             background-size: cover;
             background-attachment: fixed;
         }
@@ -17,25 +16,24 @@
 
 </head>
 
-
-
 <body>
     <div class="contents">
         <div id="menu" align="center">
-            <input type="button" id="welcomeMenuButton" value="Welcome">
-            <input type="button" id="signupMenuButton" value="Signup">
-            <input type="button" id="loginMenuButton" value="Login">
-            <input type="button" id="aboutMenuButton" value=" About">
+            <button type="button" id="welcomeMenuButton" value="Welcome" class="button">Welcome</button>
+            <button type="button" id="signupMenuButton" value="Signup" class="button">Signup</button>
+            <button  type="button" id="loginMenuButton" value="Login" class="button">Login</button>
+            <button type="button" id="aboutMenuButton" value=" About" class="button">About</button>
         </div>
         <div id="welcome">
             <br />
-            <img src="pacCoro.jpg" class="center">
+            <img src="./resources/pacCoro.jpg" class="center">
             <br />
-            <br />
-            <input type="button" id="signupButtom" name="signup" value="Signup">
-            <input type="button" id="loginByttom" name="login" value="Login">
+            <div class="center">
+                <button type="button" id="signupButtom" name="signup" value="Signup" class="button">Signup</button>
+                <button type ="button" id="loginByttom" name="login" value="Login" class="button">Login</button>
+            </div>
         </div>
-        <div id="signup" name="signup" style="display: none;">
+        <div id="signup" name="signup" style="display: none;" class="centerDiv">
             <p name="usernameP">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username"><br>
@@ -45,7 +43,7 @@
                 <input type="password" id="password" name="password"><br>
             </p>
             <p name="passwordConfirmP">
-                <label for="passwordConfirm">Confirm password</label>
+                <label for="passwordConfirm">Confirm-Password</label>
                 <input type="password" id="passwordConfirm" name="passwordConfirm"><br>
             </p>
             <p name="fullNameP">
@@ -61,10 +59,10 @@
                 <input type="date" id="birthday" name="birthday">
             </p>
             <p>
-                <input type="button" id="submit" name="submit" value="Submit">
+                <button type="button" id="submit" name="submit" value="Submit" class="button">Submit</button>
             </p>
         </div>
-        <div id="login" style="display: none;">
+        <div id="login" style="display: none;" class="centerDiv">
             <p>
                 <label for="usernameConnect">Username</label>
                 <input type="text" id="usernameConnect" name="usernameConnect"><br>
@@ -74,7 +72,7 @@
                 <input type="password" id="passwordConnect" name="passwordConnect"><br>
             </p>
             <p>
-                <input type="button" id="connect" name="connect" value="Connect">
+                <button type="button" id="connect" name="connect" value="Connect" class="button">Connect</button>
             </p>
         </div>
 
@@ -96,6 +94,7 @@
         </div>
 
         <div id="defsForm" style="display: none;">
+            <div id="usernameDefs" style="display: inline-block;"></div>
             <form id="form" autocomplete="off">
                 <fieldset>
                     <legend>Decide the intensity of your challenge</legend>
@@ -140,19 +139,27 @@
                         <input type="number" id="enemiesQuantity" name="enemiesQuantity" value="2" min="1" max="4">
                     </p>
                     <p>
-                        <input type="button" id="randomButton" name="randomButton" value="random">
-                        <input type="button" id="startButton" name="startButton" value="Let's GO!!!">
+
+                       
+                        <button type="button" id="randomButton" name="randomButton" value="random" class="button">random</button>
+                        <button type="button" id="startButton" name="startButton" value="Let's GO!!!" class="button">Let's GO!!!</button>
                     </p>
                 </fieldset>
             </form>
         </div>
-        <div id="game" hidden style="width: 80%; display: none;">
+        <div id="game" hidden style="display: none;">
             <div style="display: table-row;">
                 <div style="display: table-cell;">
                     <div id="gamesVarsDisplay">
+                        <div id="usernameDiv" style="display: inline-block;">
+
+                        </div>
+                        <br />
                         <div id="scoreDiv" style="display: inline-block;">
                         </div>
                         <div id="lifeDiv" style="display: inline-block;">
+                        </div>
+                        <div id="eatenDiv" style="display: inline-block;">
                         </div>
                         <div id="timeDiv" style="display: inline-block;">
                         </div>
@@ -161,25 +168,35 @@
 
                 </div>
 
-                <div id="definitionDisplay" style="display: table-cell;">
-                    <div id="upKeyDisplay"></div>
-                    <div id="downKeyDisplay"></div>
-                    <div id="leftKeyDisplay"></div>
-                    <div id="rightKeyDisplay"></div>
-                    <div id="foodQuantityDisplay"></div>
-                    <label for="lowColorDisplay">Low score color:</label>
-                    <input type="color" id="lowColorDisplay" disabled>
-                    <label for="medColorDisplay"><br />Medium score color:</label>
-                    <input type="color" id="medColorDisplay" disabled>
-                    <label for="highColorDisplay"><br />High score color:</label>
-                    <input type="color" id="highColorDisplay" disabled>
-                    <div id="timeLimitNumDisplay"></div>
-                    <div id="enemiesQuantityDisplay"></div>
+                <div style="display: table-cell;" class="center">
+                    <div id="definitionDisplay">
+                        <em><strong><u>Definitions</u></strong></em>
+                        <div id="upKeyDisplay"></div>
+                        <div id="downKeyDisplay"></div>
+                        <div id="leftKeyDisplay"></div>
+                        <div id="rightKeyDisplay"></div>
+                        <div id="foodQuantityDisplay"></div>
+                        <label for="lowColorDisplay">Low score color:</label>
+                        <input type="color" id="lowColorDisplay" disabled>
+                        <label for="medColorDisplay"><br />Medium score color:</label>
+                        <input type="color" id="medColorDisplay" disabled>
+                        <label for="highColorDisplay"><br />High score color:</label>
+                        <input type="color" id="highColorDisplay" disabled>
+                        <div id="timeLimitNumDisplay"></div>
+                        <div id="enemiesQuantityDisplay"></div>
+                        <br />
+                    </div>
+                    <div id="restartDiv">
+                        <em id="restartText"><strong><u>Re-Start the game</u></strong></em>
+                        <em id="restartStrong" hidden><strong><u>Re-Start the game!!!</u></strong></em>
+                        <br />
+                        <button type="button" id="restartButton" name="restartButton" value="Play again" class="button">Play again</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
 
     <script>
         let modal = document.getElementById("aboutModal");
@@ -213,6 +230,9 @@
             }
         });
     </script>
-
+    <footer>
+        <p>sise bgu 2020 contact: <a href="mailto:shmera@post.bgu.ac.il">shmera@post.bgu.ac.il</a> <a href="mailto:yiftachs@post.bgu.ac.il">yiftachs@post.bgu.ac.il</a></p>
+    </footer>
 </body>
+
 </html>
