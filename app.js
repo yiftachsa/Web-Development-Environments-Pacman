@@ -564,7 +564,7 @@ function Draw() {
                 break;
             case 4:
                 color = getRandomColor();
-                text = "wild";
+                text = "    50";
                 break;
         }
         //context.fill();
@@ -721,23 +721,33 @@ function UpdatePosition() {
     //Game logic
     if (foodRemain == 0) { //All food eaten
         gameOver();
+        drawAndUpdate();
         window.alert("Game completed");
     } else if (lifesRemain <= 0) {
         gameOver();
+        drawAndUpdate();
         window.alert("Loser!");
     } else if (timeLeft <= 0) { //todo:TIME LIMIT
         if (score >= 100) {
             gameOver();
+            drawAndUpdate();
             window.alert("Winner!");
         } else {
             gameOver();
+            drawAndUpdate();
             window.alert("You are better than " + score + " points!");
         }
     } else {
+        drawAndUpdate();
+    }
+    
+
+    function drawAndUpdate() {
         Draw();
         updateEaten(enconteredEnemy);
         updateDisplays();
     }
+    
 
     function movePacman() {
         if (keysDown[upKeyCode]) {
