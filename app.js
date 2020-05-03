@@ -490,6 +490,7 @@ function Draw() {
                 drawWall(center);
             }
 
+
             //SECOND layer - npcBoard
             if (npcBoard[i][j] != baseBoardCellType.BLANK && baseBoard[i][j] != baseBoardCellType.WALL) {
                 let npcCell = npcBoard[i][j];
