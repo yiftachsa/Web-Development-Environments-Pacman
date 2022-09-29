@@ -12,8 +12,8 @@ The course deals with environments, developing tools and technologies for Web de
 ## Pacman game | [Game Website Link](https://sise-web-development-environments.github.io/assignment2-merav-yiftach/)
 
 <p float="left">
-  <img src="Media/ass3_3.jpeg" width=55% />
-  <img src="Media/ass3_2.png" width=40% />
+  <img src="Media/ass2_3.gif" width=45% />
+  <img src="Media/ass2_2.gif" width=45% />
 </p>
 
 Yiftach Savransky | Merav Shaked
@@ -26,8 +26,8 @@ Additional functionalities added:
 2.	**Clock** – adds 25%  of the original time limit to the timer.   
 
 <p float="left">
-  <img src="Media/ass3_3.jpeg" width=55% />
-  <img src="Media/ass3_2.png" width=40% />
+  <img src="Media/ass2_4.png" width=45% />
+  <img src="Media/ass2_5.png" width=45% />
 </p>
 
 
